@@ -1,0 +1,7 @@
+[submodule "pelican-toc"]
+path = pelican-plugins/pelican-toc
+url = git@github.com:ingwinlu/pelican-toc.git
+
+[submodule "Papyrus"]
+path = themes/Papyrus
+url = git@github.com:aleylara/Papyrus.git
