@@ -1,6 +1,6 @@
 AUTHOR = 'Zijian Jiang'
 SITENAME = "Zijian Jiang's Journal"
-SITEURL = ''
+SITEURL = 'https:/callmenezha.github.io'
 
 TIMEZONE = 'Asia/Shanghai'
 DEFAULT_LANG = 'en'
