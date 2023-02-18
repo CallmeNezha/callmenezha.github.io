@@ -5,16 +5,22 @@ SITEURL = 'https://callmenezha.github.io'
 TIMEZONE = 'Asia/Shanghai'
 DEFAULT_LANG = 'en'
 
-SUBTITLE = 'Papyrus'
-SUBTEXT = '''A fast and responsive theme built for the <a class="underline" 
-href="https://blog.getpelican.com/">Pelican</a> site generator.<br>
-The theme is inspired from <a class="underline" 
-href="https://github.com/adityatelange/hugo-PaperMod">Hugo-PaperMod</a>. 
-It is styled using <a class="underline" 
-href="https://tailwindcss.com/">Tailwind CSS</a>. 
-It supports dark mode and built in search function.
+SUBTITLE = 'Hello World!'
+SUBTEXT = '''
+Hello, and welcome to my modest corner of the web!
+
+This blog began in 2023 as a personal online journal, 
+it mostly contains technical, programming-related posts. 
+It's my way to document things I find interesting for my future self.
+
+The contents of this blog reflect my personal opinions only; 
+writing the posts and the programming explorations accompanying them are done in my free time. 
+I never write on behalf of my employer in this blog. 
+As a policy, it also doesn't contain paid writing assignments and I don't accept "guest posts" 
+from others.
+
 '''
-COPYRIGHT = '©2022'
+COPYRIGHT = '©2023'
 PATH = 'content'
 THEME = 'themes/Papyrus'
 OUTPUT_PATH = 'docs'
@@ -50,8 +56,7 @@ RSS_FEED_SUMMARY_ONLY = None
 
 # Social widgets
 SOCIAL = (
-    ('github', 'https://github.com/aleylara/Papyrus'),
-    ('twitter', 'https://twitter.com/'),
+    ('github', 'https://github.com/CallmeNezha'),
 )
 
 # Article share widgets
