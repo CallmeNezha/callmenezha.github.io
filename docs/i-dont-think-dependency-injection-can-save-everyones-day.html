@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Pelican" />
+    <title>I don’t think dependency injection can save everyone’s day.</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="/theme/css/pygment.css" />
+    <link rel="stylesheet" href="/theme/css/stork.css">
+    <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
+        href="/theme/css/stork-dark.css">
+<meta name="description" content="Let's sum it up: if you need to build many objects in different configurations, using dependency injection is good for you, if not? Don't bother..." />
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
+    dark:bg-neutral-900 dark:text-zinc-300 container mx-auto justify-center md:px-3 ">
+    <nav class="sm:flex sm:justify-between xl:ml-32 pl-4 items-center">
+        <div class="flex pt-4">
+            <h1 class="font-semibold text-2xl"><a href="/">Zijian Jiang's Journal</a></h1>
+            <button id="theme-toggle" type="button"
+                class="text-zinc-700 dark:text-zinc-400 rounded-full focus:outline-none text-sm ml-2 p-1">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <ul class="flex flex-wrap lg:mr-24 md:pt-0">
+            <li class="mr-4 pt-6"><a  href="/archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="/categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  href="/tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="/about.html">About</a></li>
+        </ul>
+    </nav>
+    <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
+        <nav class="text-zinc-800 dark:text-zinc-300 mt-12 pb-2 md:mt-16" aria-label="Breadcrumb">
+            <ul class="p-0 inline-flex items-center">
+                <li class="flex items-center">
+                    <a href="/" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        Home
+                    </a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="/categories.html">Categories</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="/category/design-pattern.html">Design Pattern</a>
+                </li>
+                <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                        d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                </svg>
+            </ul>
+        </nav>
+
+<main>
+  <header>
+    <h1 class="font-semibold text-3xl my-2">I don’t think dependency injection can save everyone’s day.</h1>
+    <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
+      <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
+        <time>二月 18, 2023</time>
+        <div>
+          <span>&nbsp;·&nbsp;3 min read</span>
+        </div>
+        <div>
+          <span>&nbsp;·&nbsp;Zijian Jiang</span>
+        </div>
+      </div>
+    </footer>
+  </header>
+  <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
+    <summary class="text-lg font-bold">Table of contents</summary>
+    <div class="mx-4 px-4 underline">
+      <div id="toc"><ul><li><a class="toc-href" href="#di-in-wikis-definition" title="DI in wiki&rsquo;s definition">DI in wiki&rsquo;s definition</a></li><li><a class="toc-href" href="#an-example-of-di" title="An example of DI">An example of DI</a></li></ul></div>
+    </div>
+  </details>
+  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+              prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
+              prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
+              prose-pre:bg-zinc-200 prose-pre:text-zinc-800
+              dark:prose-pre:bg-zinc-800 dark:prose-pre:text-zinc-200
+              prose-blockquote:text-zinc-800
+              dark:prose-blockquote:text-zinc-200
+              prose-a:text-gray-500
+              dark:prose-a:text-gray-400
+              dark:prose-strong:text-zinc-200 
+              dark:prose-code:text-zinc-200
+              dark:prose-code:bg-zinc-800
+              prose-code:bg-zinc-200
+              prose-code:font-light
+              prose-img:rounded-md
+              ">
+    <blockquote>
+<p>Let's sum it up: if you need to build many objects in different configurations, using dependency injection is good for you, if not? Don't bother trying to understand it, just do things the way you think is more "correct".</p>
+</blockquote>
+<p>If you don't know DI before, the lecture below is a good starting point:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=RlfLCWKxHJ0">The Clean Code Talks - Don't Look For Things! (a talk by Mi&scaron;ko Hevery)</a></li>
+</ul>
+<p>And the example written here is used to end it :-)</p>
+<h2 id="di-in-wikis-definition">DI in wiki&rsquo;s definition</h2>
+<p>In&nbsp;software engineering,&nbsp;dependency injection&nbsp;is a&nbsp;design pattern&nbsp;in which an&nbsp;object&nbsp;or&nbsp;function&nbsp;receives other objects or functions that it depends on. A form of&nbsp;inversion of control, dependency injection aims to&nbsp;separate the concerns&nbsp;of constructing objects and using them, leading to&nbsp;loosely&nbsp;coupled&nbsp;programs.&nbsp;The pattern ensures that an object or function which wants to use a given&nbsp;service&nbsp;should not have to know how to construct those services. Instead, the receiving 'client' (object or function) is provided with its dependencies by external code (an 'injector'), which it is not aware of. Dependency injection helps by making implicit dependencies explicit and helps solve the following problems:
+* How can a&nbsp;class&nbsp;be independent from the creation of the objects it depends on?
+* How can an application, and the objects it uses support different configurations?
+* How can the behavior of a piece of code be changed without editing it directly?
+In addition, dependency injection is used for keeping code in-line with the&nbsp;dependency inversion principle.
+Fundamentally, dependency injection consists of&nbsp;passing parameters to a method.</p>
+<h2 id="an-example-of-di">An example of DI</h2>
+<p>The concept is very vague, and let&rsquo;s first see the silly example described in <code>The Clean Code Talks</code> video.</p>
+<p><img alt="It look silly like this" src="./images/It look silly like this.png"/></p>
+<p>The python version is here:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Car</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modelNo</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">EngineFactory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">modelNo</span><span class="p">)</span>
+</code></pre></div>
+<p>So the point that speaker thinks it is silly that: Car should not know about engine factory and car should not know how to build it neither. OK, so lets extend this silly example further.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Engine</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">modelNo</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Engine</span><span class="p">:</span>
+        <span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="o">**</span><span class="n">fetchEngineParameters</span><span class="p">(</span><span class="n">modelNo</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">engine</span>
+
+<span class="k">class</span> <span class="nc">Wheel</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">modelNo</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Wheel</span><span class="p">:</span>
+        <span class="n">wheel</span> <span class="o">=</span> <span class="n">Wheel</span><span class="p">(</span><span class="o">**</span><span class="n">fetchWheelParameters</span><span class="p">(</span><span class="n">modelNo</span><span class="p">))</span>
+        <span class="n">tire</span> <span class="o">=</span> <span class="n">Tire</span><span class="p">(</span><span class="o">**</span><span class="n">fetchTireParameters</span><span class="p">(</span><span class="n">modelNo</span><span class="p">))</span>
+        <span class="n">wheel</span><span class="o">.</span><span class="n">setTire</span><span class="p">(</span><span class="n">tire</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wheel</span>
+
+<span class="k">class</span> <span class="nc">Car</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modelNo</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">modelNo</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wheels</span> <span class="o">=</span> <span class="p">[</span><span class="n">Wheel</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">modelNo</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span>
+</code></pre></div>
+<p>This should be more silly because not only Car knows how to build itself an engine and wheels but also Wheel knows how to build itself a Tire.</p>
+<p>But is it stupid? For the real world, yes! But that's just my code, I can made my car a Transformer who knows how to compose itself, that's cool. After all, it's just a bunch of information moving around on my computer, so it is not necessary to mimic the real world process(every part of the car is a dumb thing, only humans with hands and minds or robots that also have hands and "minds" to do the manufacturing work). It is also not necessary to write more code for that.</p>
+    <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
+  </div>
+  <footer class="flex flex-col mt-10 ">
+    <ul class="flex flex-wrap">
+      <a href="/tag/dependency-injection.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          Dependency Injection
+        </li>
+      </a>
+      <a href="/tag/design-pattern.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          Design Pattern
+        </li>
+      </a>
+      <a href="/tag/di.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          DI
+        </li>
+      </a>
+    </ul>
+    <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
+        <a class="flex flex-col pr-2" href="/first-post.html">
+          <div class="mx-4 py-2 text-left">
+            <p class="text-zinc-500 dark:text-neutral-400 text-sm">« PREV PAGE</p>
+            <p class="text-left py-1 hover:underline">First Post</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="flex bg-zinc-200 dark:bg-zinc-700 py-2 rounded-lg justify-center space-x-2 text-xs">
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
+          href="https://twitter.com/intent/tweet/?text=Features&amp;url=/i-dont-think-dependency-injection-can-save-everyones-day.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
+          href="https://www.linkedin.com/sharing/share-offsite/?url=/i-dont-think-dependency-injection-can-save-everyones-day.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
+          href="https://reddit.com/submit?url=/i-dont-think-dependency-injection-can-save-everyones-day.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
+          href="https://facebook.com/sharer/sharer.php?u=/i-dont-think-dependency-injection-can-save-everyones-day.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
+          href="https://api.whatsapp.com/send?text=Features - /i-dont-think-dependency-injection-can-save-everyones-day.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
+          href="https://telegram.me/share/url?text=Features&amp;url=/i-dont-think-dependency-injection-can-save-everyones-day.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+    </div>
+  </footer>
+  <div>
+  </div>
+</main>
+
+    </div>
+    <footer class="flex w-full text-xs justify-center mt-10 mb-6 text-zinc-500 dark:text-zinc-400">
+        <div class="px-4">
+            <span>©2023&nbsp;&#8226;&nbsp;</span>ZiJian Jiang (Github@CallmeNeZha)
+        </div>
+    </footer>
+
+
+    <script>
+        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        let themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+    <!--  -->
+</body>
+
+</html>
