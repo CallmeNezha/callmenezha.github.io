@@ -14,7 +14,11 @@ This incident made me think about software development and how the software arou
 
 Back to 1970 there was a software crisis. The main course of it is that computer became several orders of magnitude more powerful, but people still using the old ways to program, and with huge amount of demands expected to fullfiled by computer, the development of software soon crashed to the ground quickly.
 
-So what happened in the past, and why do we hear so little about the software crisis now?
+![2880px-Trinity77](./images/2880px-Trinity77.jpeg)
+
+Yes, these are the powerful computers in photo above cause the software crisis.
+
+So what happened in the past, and why do we know so little about the software crisis now? Even today's computers are about 1,000,000 times more powerful.
 
 Hoare's paper is worth reading [How Did Software Get So Reliable Without Proof? ](https://gwern.net/doc/math/1996-hoare.pdf).
 
