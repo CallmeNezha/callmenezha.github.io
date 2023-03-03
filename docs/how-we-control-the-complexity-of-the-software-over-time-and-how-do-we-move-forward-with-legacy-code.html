@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Pelican" />
+    <title>How we control the complexity of the software over time and how do we move forward with legacy code.</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+    <link rel="stylesheet" type="text/css" href="https://callmenezha.github.io/theme/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://callmenezha.github.io/theme/css/pygment.css" />
+    <link rel="stylesheet" href="https://callmenezha.github.io/theme/css/stork.css">
+    <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
+        href="https://callmenezha.github.io/theme/css/stork-dark.css">
+<meta name="description" content="There is a Qt bug report dating back to 2014 and it remains open in 2023. Few days ago, when i was failed to add shortcut Meta+Tab to Qt..." />
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
+    dark:bg-neutral-900 dark:text-zinc-300 container mx-auto justify-center md:px-3 ">
+    <nav class="sm:flex sm:justify-between xl:ml-32 pl-4 items-center">
+        <div class="flex pt-4">
+            <h1 class="font-semibold text-2xl"><a href="https://callmenezha.github.io/">Zijian Jiang's Journal</a></h1>
+            <button id="theme-toggle" type="button"
+                class="text-zinc-700 dark:text-zinc-400 rounded-full focus:outline-none text-sm ml-2 p-1">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <ul class="flex flex-wrap lg:mr-24 md:pt-0">
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="https://callmenezha.github.io/categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/about.html">About</a></li>
+        </ul>
+    </nav>
+    <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
+        <nav class="text-zinc-800 dark:text-zinc-300 mt-12 pb-2 md:mt-16" aria-label="Breadcrumb">
+            <ul class="p-0 inline-flex items-center">
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        Home
+                    </a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/categories.html">Categories</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/category/complex-system.html">Complex System</a>
+                </li>
+                <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                        d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                </svg>
+            </ul>
+        </nav>
+
+<main>
+  <header>
+    <h1 class="font-semibold text-3xl my-2">How we control the complexity of the software over time and how do we move forward with legacy code.</h1>
+    <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
+      <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
+        <time>三月 01, 2023</time>
+        <div>
+          <span>&nbsp;·&nbsp;8 min read</span>
+        </div>
+        <div>
+          <span>&nbsp;·&nbsp;Zijian Jiang</span>
+        </div>
+      </div>
+    </footer>
+  </header>
+  <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
+    <summary class="text-lg font-bold">Table of contents</summary>
+    <div class="mx-4 px-4 underline">
+      <div id="toc"><ul><li><a class="toc-href" href="#the-software-crisis-of-1970-and-its-resolutions-reflections-on-the-evolution-of-software-development" title="The Software Crisis of 1970 and its Resolutions: Reflections on the Evolution of Software Development">The Software Crisis of 1970 and its Resolutions: Reflections on the Evolution of Software Development</a></li><li><a class="toc-href" href="#my-philothophy-of-controlling-software-complexitycontrolled-by-man-kind" title="My Philothophy of Controlling Software Complexity(Controlled by Man-kind)">My Philothophy of Controlling Software Complexity(Controlled by Man-kind)</a></li><li><a class="toc-href" href="#reduce-information-entropy-as-much-as-possible-design-software-like-a-linguist" title="Reduce Information Entropy as much as Possible: Design Software like a Linguist">Reduce Information Entropy as much as Possible: Design Software like a Linguist</a></li><li><a class="toc-href" href="#what-can-we-expect-in-the-future-will-ai-programmers-control-the-complexity" title="What Can We Expect in the Future: Will AI programmers control the complexity?">What Can We Expect in the Future: Will AI programmers control the complexity?</a></li></ul></div>
+    </div>
+  </details>
+  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+              prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
+              prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
+              prose-pre:bg-zinc-200 prose-pre:text-zinc-800
+              dark:prose-pre:bg-zinc-800 dark:prose-pre:text-zinc-200
+              prose-blockquote:text-zinc-800
+              dark:prose-blockquote:text-zinc-200
+              prose-a:text-gray-500
+              dark:prose-a:text-gray-400
+              dark:prose-strong:text-zinc-200 
+              dark:prose-code:text-zinc-200
+              dark:prose-code:bg-zinc-800
+              prose-code:bg-zinc-200
+              prose-code:font-light
+              prose-img:rounded-md
+              ">
+    <blockquote>
+<p>There is a Qt bug report dating back to 2014 and it remains open in 2023. </p>
+</blockquote>
+<p>Few days ago, when i was failed to add shortcut Meta+Tab to Qt application. And after hours of digging into it.
+I found this to be a bug dating back to 2014, and it's still open. Obviously it needs someone to fix it, why hasn't anyone fixed it yet? I think the main reason is that the burden of legacy code maintainance grows quickly and people are tired of maintaining a lot of code let alone adding new features.</p>
+<p>This incident made me think about software development and how the software around the world evolve over time. </p>
+<h2 id="the-software-crisis-of-1970-and-its-resolutions-reflections-on-the-evolution-of-software-development">The Software Crisis of 1970 and its Resolutions: Reflections on the Evolution of Software Development</h2>
+<p>Back to 1970 there was a software crisis. The main course of it is that computer became several orders of magnitude more powerful, but people still using the old ways to program, and with huge amount of demands expected to fullfiled by computer, the development of software soon crashed to the ground quickly.</p>
+<p>So what happened in the past, and why do we hear so little about the software crisis now?</p>
+<p>Hoare's paper is worth reading <a href="https://gwern.net/doc/math/1996-hoare.pdf">How Did Software Get So Reliable Without Proof? </a>.</p>
+<p>It concludes 4 points (at year of 1996) that can explain why have twenty years of pessimistic predictions been falsified. </p>
+<blockquote>
+<p>Twenty years ago (at year of 1976) it was reasonable to predict that the size and ambition of software products would be severely limited by the unreliability of their component programs. Crude estimates suggest that professionally written programs delivered to the customer can contain between one and ten independently correctable errors per thousand lines of code; and any software error in principle can have spectacular effect (or worse: a subtly misleading effect) on the behaviour of the entire system. </p>
+</blockquote>
+<ol>
+<li>Management: The most dramatic advances in the timely delivery of dependable software are directly attributed to a wider recognition of the fact that the process of program development can be predicted, planned, managed and controlled in the same way as in any other branch of engineering.</li>
+<li>Testing: When the program is implemented and passes all its tests the first time, it is almost unbelievable that there could be any inherent defect in the methods by which the program has been produced or any systematic lapse in their application. </li>
+<li>Debugging: Just correct the error and get on with the job,  analogy with the attempt to get rid of an infestation
+of mosquitoes by killing the ones that bite you - so much quicker and cheaper and more satisfying than draining the swamps in which they breed.</li>
+<li>Over-enigneering: The concept of a safety factor is pervasive in engineering. After calculating the worst case load on a beam, the civil engineer will try to build it ten times stronger, or at least twice as strong, whenever the extra cost is affordable.</li>
+<li>Programming Methodology:  At one time, most programmers were proud of their skill in the use of jumps and labels. They regarded structured notations as unnatural and counter-intuitive. The decisive breakthrough in the adoption of structured programming by IBM was the publication of a simple result in pure programming theory, the Bohm-Jacopini theorem. And now we have data types and strict type-checking and information hiding. (The information hiding introduced by the ALGOL 60 local variable was generalised to the design of larger-scale modules and classes of object-oriented programming, introduced into ALGOL 60 by SIMULA 67.)</li>
+</ol>
+<p>Linux 0.0.1 has less than 10,000 lines of code at the beginning and until year of 2020, Linux had 27,800,000 linex of code, 2780 times bigger! So I can think that somehow the software development crisis is solved because of the above 5 points, because the code base of Linux is now so huge that nobody can understand it thoroughly. Why Linux turn into a beast over years? I think these are the main sources that drive it as well as software development and complexity of our software world: 1) new requirements, 2) new circumstances, 3) new approaches. Without them, we wouldn't need to update our software anymore. (Think of library book systems, you can still use hardware and software designed 40 years ago and it will still work). And the world is like this: if a thing is done well enough to meet a certain need, it will become more and more stable and become a stepping stone for newcomers. In software we talk about reuse, in science we talk about known laws, they are the same in some way. If bug appears in software we fix(patch) it, if bug appears in theorm we ammend it. But there also a essential difference between software development and science exploration: </p>
+<blockquote>
+<p>The program is proof(proving process) of specific problem can be solved by specific task or procedure using computer technology, it reveals the truth about problem solving, which is most likely man-made(we talk about software that used for officing and business mostly, except those to model and analyze natural phenomena). A theory is a proof of some scientific conjecture or hypothesis that may reveals the truch about fundamental laws of the universe, which is most likely god-made. And man's thoughts are constantly changing, but God's will is unchanging(of cause it's my personal belief).</p>
+</blockquote>
+<h2 id="my-philothophy-of-controlling-software-complexitycontrolled-by-man-kind">My Philothophy of Controlling Software Complexity(Controlled by Man-kind)</h2>
+<p>So if we agree structured programming is the main methodology of programming today, you also can agree that program can be dissected into several parts of code: Code that builds data structure(how the information is stored and how the information is piped between "scopes") and code that uses data to do side effects. And the chaos always coming from the poor orgnized information and messy pipes.</p>
+<p>Let me explain more clearly: Structured programming emphasizes the use of control structures like loops, conditionals, and subroutines to build programs that are easier to read, understand, and maintain. Data structures are the way information is stored and manipulated in a program, and building them typically involves declaring variables, creating objects, and allocating memory. Once the data structures are in place, code can be written to perform side effects, which are actions that change the state of the program or its environment, such as printing output, reading input, or modifying files.</p>
+<p>To avoid chaos and messy pipes, it's important to organize the data structures and their interactions with side effect code in a logical and coherent way. This can involve using well-defined interfaces between different parts of the program, following naming conventions, and commenting the code to make it easier to understand.</p>
+<p>According to my many years of practical experience, the design of the API is always a key factor affecting the complexity of the system. And API can consider be the interaction protocol between different components and protocol between program and software engineers(human-being). If the protocol is confusing and redundant, so will the system.</p>
+<p>So you might ask how can we design precise and concise APIs? 
+<strong>My approach to designing precise and concise APIs is to follow the principles of information theory, which aims to reduce information entropy as much as possible. Information entropy refers to the amount of uncertainty or randomness in a system, and reducing it can help to simplify the design of the API and make it more intuitive for developers to use.</strong></p>
+<h2 id="reduce-information-entropy-as-much-as-possible-design-software-like-a-linguist">Reduce Information Entropy as much as Possible: Design Software like a Linguist</h2>
+<p>Some specific techniques I suggests that can be used to reduce information entropy in API design include:</p>
+<ul>
+<li>Using clear and consistent naming conventions for functions, variables, and other elements of the API.</li>
+<li>Minimizing the number of parameters and arguments required to use the API, as this can help to reduce complexity and increase readability.</li>
+<li>Providing clear and concise documentation for the API, including examples and explanations of how to use different features.</li>
+<li>Designing the API to be as modular and composable as possible, so that developers can easily combine different components to achieve their desired functionality.</li>
+<li>Developing explicit segregated type systems for different functional domains in the system, and limit the number of types as much as possible.</li>
+</ul>
+<p>By following these principles and techniques, software engineers can create APIs that are easy to use, understand, and maintain, which can lead to more reliable and efficient software systems. </p>
+<p>Software engineers always talk about software architectural design as if building software systems refers to architectural engineering. But I prefer thinking about software design as designing a new language, a new language consisting of a collection of term definitions(type system), imperative sentence(subroutines or functions performing tasks) and concept clarification(documentation), a domain specific language to describe and solve a range of problems in the domain. Language is the most powerful tool for human to communicate, it should be accurate, concise and understandable, just like we expect from our APIs.</p>
+<h2 id="what-can-we-expect-in-the-future-will-ai-programmers-control-the-complexity">What Can We Expect in the Future: Will AI programmers control the complexity?</h2>
+<p>When Google launched in 1998, it forever changed the way people search and read information. Today, OpenAI released ChatGPT in 2023, forever changed the way people create content. I could not have written this article without Internet, Google and ChatGPT, and I also believe we can use natural language to maintain legacy code, update, develop software and forget about coding techniques and languages in the "near" future. </p>
+<p>And if this day comes, will AI control the software complexity as we did? Will our hard work be in vein as computer with much much bigger memory(RAM and databases) and process resouces(CPU) to enable AI to gain insights of extreamly large code base which human programmer can't read them all in life time? And will AI write messy code only AI can "understand"?</p>
+<p>My prediction is: I don't think artificial intelligence will write poorly designed code then. One reason is that AI always finds the best way to do things, with my knowledge of reinforcement learning techniques used in today's AI development. If the AI &ZeroWidthSpace;&ZeroWidthSpace;is optimized to use the least amount of resources, it will inevitably(automatically)  writes good code as a side effect of reducing information entropy to save memory and hard drive space as much as possible, and maybe it will not write documentation if we not specify it, since the coding part no longer requires human participation. Another reason is that we humans can and will optimize AI to generate clean and understandable code, because humans of course want everything under control and prevent the Terminator T-800 comes out of nowhere :)</p>
+    <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
+  </div>
+  <footer class="flex flex-col mt-10 ">
+    <ul class="flex flex-wrap">
+      <a href="https://callmenezha.github.io/tag/complex-system.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          Complex System
+        </li>
+      </a>
+      <a href="https://callmenezha.github.io/tag/software-crisis.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          Software Crisis
+        </li>
+      </a>
+      <a href="https://callmenezha.github.io/tag/software-engineering.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          Software Engineering
+        </li>
+      </a>
+    </ul>
+    <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+      <div class="w-1/2 rounded-l-lg"></div>
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
+        <a class="flex flex-col" href="https://callmenezha.github.io/dependency-injection-pitfall.html">
+          <div class="text-right mx-4 py-2">
+            <p class="text-zinc-500 dark:text-neutral-400 text-sm">NEXT PAGE »</p>
+            <p class="text-right py-1 hover:underline">Dependency injection pitfall</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="flex bg-zinc-200 dark:bg-zinc-700 py-2 rounded-lg justify-center space-x-2 text-xs">
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
+          href="https://twitter.com/intent/tweet/?text=Features&amp;url=https://callmenezha.github.io/how-we-control-the-complexity-of-the-software-over-time-and-how-do-we-move-forward-with-legacy-code.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
+          href="https://www.linkedin.com/sharing/share-offsite/?url=https://callmenezha.github.io/how-we-control-the-complexity-of-the-software-over-time-and-how-do-we-move-forward-with-legacy-code.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
+          href="https://reddit.com/submit?url=https://callmenezha.github.io/how-we-control-the-complexity-of-the-software-over-time-and-how-do-we-move-forward-with-legacy-code.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
+          href="https://facebook.com/sharer/sharer.php?u=https://callmenezha.github.io/how-we-control-the-complexity-of-the-software-over-time-and-how-do-we-move-forward-with-legacy-code.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
+          href="https://api.whatsapp.com/send?text=Features - https://callmenezha.github.io/how-we-control-the-complexity-of-the-software-over-time-and-how-do-we-move-forward-with-legacy-code.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
+          href="https://telegram.me/share/url?text=Features&amp;url=https://callmenezha.github.io/how-we-control-the-complexity-of-the-software-over-time-and-how-do-we-move-forward-with-legacy-code.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+    </div>
+  </footer>
+  <div>
+  </div>
+</main>
+
+    </div>
+    <footer class="flex w-full text-xs justify-center mt-10 mb-6 text-zinc-500 dark:text-zinc-400">
+        <div class="px-4">
+            <span>©2023&nbsp;&#8226;&nbsp;</span>ZiJian Jiang (Github@CallmeNeZha)
+        </div>
+    </footer>
+
+
+    <script>
+        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        let themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+    <!--  -->
+</body>
+
+</html>
