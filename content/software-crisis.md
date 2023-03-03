@@ -1,5 +1,5 @@
 Title: How we control the complexity of the software over time and how do we move forward with legacy code.
-Date: 2023-03-01 22:36
+Date: 2023-03-04 01:24
 Category: Complex System
 Tags: Complex System, Software Engineering, Software Crisis
 
@@ -70,7 +70,7 @@ And if this day comes, will AI control the software complexity as we did? Will o
 
 My prediction is: I don't think artificial intelligence will write poorly designed code then. One reason is that AI always finds the best way to do things, with my knowledge of reinforcement learning techniques used in today's AI development. If the AI ​​is optimized to use the least amount of resources, it will inevitably(automatically)  writes good code as a side effect of reducing information entropy to save memory and hard drive space as much as possible, and maybe it will not write documentation if we not specify it, since the coding part no longer requires human participation. Another reason is that we humans can and will optimize AI to generate clean and understandable code, because humans of course want everything under control and prevent the Terminator T-800 comes out of nowhere :)
 
-
+![]()
 
 
 
