@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Pelican" />
+    <title>IDE vs Notebook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+    <link rel="stylesheet" type="text/css" href="https://callmenezha.github.io/theme/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://callmenezha.github.io/theme/css/pygment.css" />
+    <link rel="stylesheet" href="https://callmenezha.github.io/theme/css/stork.css">
+    <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
+        href="https://callmenezha.github.io/theme/css/stork-dark.css">
+<meta name="description" content="Why do I like to use Pycharm/VScode to develop software, but use Jupyter to analyze and transform data? This question pop out of nowhere, when I..." />
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
+    dark:bg-neutral-900 dark:text-zinc-300 container mx-auto justify-center md:px-3 ">
+    <nav class="sm:flex sm:justify-between xl:ml-32 pl-4 items-center">
+        <div class="flex pt-4">
+            <h1 class="font-semibold text-2xl"><a href="https://callmenezha.github.io/">Zijian Jiang's Journal</a></h1>
+            <button id="theme-toggle" type="button"
+                class="text-zinc-700 dark:text-zinc-400 rounded-full focus:outline-none text-sm ml-2 p-1">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <ul class="flex flex-wrap lg:mr-24 md:pt-0">
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="https://callmenezha.github.io/categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/about.html">About</a></li>
+        </ul>
+    </nav>
+    <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
+        <nav class="text-zinc-800 dark:text-zinc-300 mt-12 pb-2 md:mt-16" aria-label="Breadcrumb">
+            <ul class="p-0 inline-flex items-center">
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        Home
+                    </a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/categories.html">Categories</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/category/product.html">Product</a>
+                </li>
+                <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                        d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                </svg>
+            </ul>
+        </nav>
+
+<main>
+  <header>
+    <h1 class="font-semibold text-3xl my-2">IDE vs Notebook</h1>
+    <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
+      <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
+        <time>March 20, 2023</time>
+        <div>
+          <span>&nbsp;·&nbsp;6 min read</span>
+        </div>
+        <div>
+          <span>&nbsp;·&nbsp;Zijian Jiang</span>
+        </div>
+      </div>
+    </footer>
+  </header>
+  <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
+    <summary class="text-lg font-bold">Table of contents</summary>
+    <div class="mx-4 px-4 underline">
+      <div id="toc"><ul><li><a class="toc-href" href="#time-is-most-previous-thing" title="Time is Most Previous Thing">Time is Most Previous Thing</a></li><li><a class="toc-href" href="#different-properties-of-declarative-and-structural-programming" title="Different Properties of Declarative and Structural Programming">Different Properties of Declarative and Structural Programming</a><ul><li><a class="toc-href" href="#properties-of-declarative-programming" title="Properties of Declarative Programming">Properties of Declarative Programming</a></li><li><a class="toc-href" href="#properties-of-structual-programming" title="Properties of Structual Programming">Properties of Structual Programming</a></li><li><a class="toc-href" href="#timeline-is-crucial" title="Timeline is Crucial">Timeline is Crucial</a></li></ul></li><li><a class="toc-href" href="#different-workflow-of-declarative-and-structural-programming_1" title="Different Workflow of Declarative and Structural Programming">Different Workflow of Declarative and Structural Programming</a><ul><li><a class="toc-href" href="#workflow-of-declerative-programming" title="Workflow of Declerative programming">Workflow of Declerative programming</a></li><li><a class="toc-href" href="#workflow-of-strutual-programming" title="Workflow of Strutual programming">Workflow of Strutual programming</a></li></ul></li><li><a class="toc-href" href="#references_1" title="References:">References:</a></li></ul></div>
+    </div>
+  </details>
+  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+              prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
+              prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
+              prose-pre:bg-zinc-200 prose-pre:text-zinc-800
+              dark:prose-pre:bg-zinc-800 dark:prose-pre:text-zinc-200
+              prose-blockquote:text-zinc-800
+              dark:prose-blockquote:text-zinc-200
+              prose-a:text-gray-500
+              dark:prose-a:text-gray-400
+              dark:prose-strong:text-zinc-200 
+              dark:prose-code:text-zinc-200
+              dark:prose-code:bg-zinc-800
+              prose-code:bg-zinc-200
+              prose-code:font-light
+              prose-img:rounded-md
+              ">
+    <p>Why do I like to use Pycharm/VScode to develop software, but use Jupyter to analyze and transform data?</p>
+<p>This question pop out of nowhere, when I subconsiouly open Jupyter to do some experiments on DAP. So its been long time before i used Jupyter do some XML dataset analysising and transforming data. After that i have been using PyCharm to develop application. </p>
+<p>So things can be deduced from the following question:</p>
+<ul>
+<li>Users use the specific tools to SAVE TIME when solving problem, so what most time effected thing ?</li>
+<li>Why is one problem is easy for one tool to solve but bitter for the other ?</li>
+</ul>
+<h2 id="time-is-most-previous-thing">Time is Most Previous Thing</h2>
+<p>If there is a powerful artificial intelligence that can do everything for you, you can forget about using any kind of tool and go spend time with your family. Unfortunately, there is no such AI that can completely replace human work, so we tend to use tools that make our lives easier to solve problems. Let's see what we spend the most time doing during software development: Design and Debug. (assuming we have a good understanding of the requirements and a good understanding of what the expected outcome is, if not then it's not a coding problem but a problem definition problem)</p>
+<p><img alt="spending-time-with-family-is-important" src="./images/spending-time-with-family-is-important.png"/></p>
+<h2 id="different-properties-of-declarative-and-structural-programming">Different Properties of Declarative and Structural Programming</h2>
+<p>Design and debug activities vary across programming paradigms. I know this categorization is biased, but let's roughly categorize two different programming paradigm below:</p>
+<h3 id="properties-of-declarative-programming">Properties of Declarative Programming</h3>
+<blockquote>
+<p>Express the logic of a computation without describing its control flow.</p>
+</blockquote>
+<p>In declerative programming each declration statement has input and output, there is few states(innner variables) and control flow like loop and branching is kinda not recommanded(even forbidden). In declarative programming, the programmer specifies what they want the program to accomplish, rather than explicitly specifying how to accomplish it. This makes it well-suited for scientific computing, where computations can be very complex and difficult to implement using traditional procedural programming techniques, where the structure of the language being processed is often complex and difficult to express, make data analysis and transformation tasks more concise and easier to understand. So declarative programming is most powerful tool for those that involve complex computations or data processing.</p>
+<h3 id="properties-of-structual-programming">Properties of Structual Programming</h3>
+<blockquote>
+<p>Uses structures such as subroutines, block structures, for loops, and while loops to replace traditional goto. In other language: control flow matters.</p>
+</blockquote>
+<p>Structural programming is a programming paradigm that emphasizes the use of structured control flow constructs, such as loops and conditionals, to control the flow of execution within a program. The idea is to replace unstructured control flow constructs, such as GOTO statements, with structured constructs that are easier to read, understand, and maintain.</p>
+<h3 id="timeline-is-crucial">Timeline is Crucial</h3>
+<p><img alt="timeline" src="./images/timeline.png"/></p>
+<p>In my other take on the difference between declarative and structural programming, the TIMELINE is crucial to the problem we are trying to solve. Declarative programming emphasizes what the program should do, rather than how it should do it. This can be beneficial in situations where the problem being solved can be described in terms of a set of rules or constraints. For example, in the case of a database query, the programmer may specify the criteria for selecting data, but leave it to the database engine to determine the most efficient way to retrieve that data. On the other hand, structured programming emphasizes the use of structured control flow constructs to control the flow of execution within a program. This can be beneficial in situations where the problem being solved involves complex algorithms or requires a specific sequence of operations. For example, event-driven software like our UI based application or network protocol stack which is basically a looped nested statemachine. The choice between declarative and structured programming depends on the nature of the problem being solved, as well as the requirements and constraints of the project. A programmer may choose declarative programming when the problem can be described in terms of rules or constraints, and structured programming when the problem requires a specific sequence of operations.</p>
+<h2 id="different-workflow-of-declarative-and-structural-programming_1">Different Workflow of Declarative and Structural Programming</h2>
+<p><img alt="jupyter-vs-pycharm" src="./images/jupyter-vs-pycharm.png"/></p>
+<p>The natural working loop is Plan Do Check Adjust 4 steps loop. The different approach of this same loop on declarative and strutual programmings are:</p>
+<h3 id="workflow-of-declerative-programming">Workflow of Declerative programming</h3>
+<blockquote>
+<p>Declerative programming is naturally interactive because each statement command line can be evaluated individually, and the result of each statement can be returned immediately and inspected by the user.</p>
+</blockquote>
+<p><img alt="maze" src="./images/maze.png"/></p>
+<p>This is especially common in data processing workflows, where the user deals with highly complex data structures or vague and related data, and it is not clear how to build the data processing pipeline at the beginning, so he/she can only build it step by step, evaluating each statement or command line as they go, and inspecting the results before moving on to the next step. This allows the programmer to explore different directions and try different approaches to see what works best, without losing the progress they have made so far. </p>
+<blockquote>
+<p>It's like walking a maze, you take the map you've explored with you (in terms of coding, you don't want to lose the data you've got so far by re-running the program) and continue exploring the maze from this point.  The ability to evaluate each statement or command line individually can also be useful for debugging purposes. If an error occurs, the programmer can inspect the result of the previous statements or command lines to see where the error occurred and what might have caused it.</p>
+</blockquote>
+<p>So the workflow of declerative programming usually is non-linear.</p>
+<h3 id="workflow-of-strutual-programming">Workflow of Strutual programming</h3>
+<blockquote>
+<p>In structured programming, the workflow is typically more rigidly defined compared to declarative programming. The code is usually organized into subroutines, functions, or modules, which are then called in a specific sequence to perform a particular task or solve a specific problem. </p>
+</blockquote>
+<p><img alt="maze" src="./images/building-design.png"/></p>
+<p>The use of structured control flow constructs, such as loops and conditionals, helps to ensure that the program follows a specific path and that the code is executed in a specific order. Unlike declarative programming, where the pipeline for processing data may not be immediately clear, structured programming usually requires a clear understanding of the problem being solved and the steps needed to solve it. The workflow is typically defined at the beginning of the project and may be modified as needed based on feedback or changes in requirements, but the basic structure of the program remains relatively constant. Structured programming can be more efficient than declarative programming in certain situations, especially when the problem being solved involves complex algorithms or requires a specific sequence of operations. By controlling the flow of execution through the use of structured control flow constructs, structured programming can ensure that the program runs quickly and efficiently, without unnecessary computations or steps.</p>
+<blockquote>
+<p>Structured programming could be like building a house. Each step in the building process, such as laying the foundation, framing the walls, and installing the roof, represents a subroutine or module in the code. The use of structured control flow constructs helps to ensure that the steps are executed in the correct order, just like how the building process requires a specific sequence of steps. As with building a house, the workflow in structured programming is typically defined at the beginning of the project and may be modified as needed, but the basic structure of the program remains relatively constant. By following a structured approach to building a house or writing code, the builder or programmer can produce a consistent and reliable outcome.</p>
+</blockquote>
+<p>So the workflow of strutual programming usually is linear.</p>
+<h2 id="references_1">References:</h2>
+<ul>
+<li>https://towardsdatascience.com/5-reasons-why-jupyter-notebooks-suck-4dc201e27086</li>
+</ul>
+    <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
+  </div>
+  <footer class="flex flex-col mt-10 ">
+    <ul class="flex flex-wrap">
+      <a href="https://callmenezha.github.io/tag/product.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          Product
+        </li>
+      </a>
+    </ul>
+    <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+      <div class="w-1/2 rounded-l-lg"></div>
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
+        <a class="flex flex-col" href="https://callmenezha.github.io/inverse-of-control-paradigm-used-in-the-design-of-vscode-debugger-extension-api.html">
+          <div class="text-right mx-4 py-2">
+            <p class="text-zinc-500 dark:text-neutral-400 text-sm">NEXT PAGE »</p>
+            <p class="text-right py-1 hover:underline">Inverse of Control Paradigm Used in the Design of VSCode Debugger Extension API.</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="flex bg-zinc-200 dark:bg-zinc-700 py-2 rounded-lg justify-center space-x-2 text-xs">
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
+          href="https://twitter.com/intent/tweet/?text=Features&amp;url=https://callmenezha.github.io/ide-vs-notebook.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
+          href="https://www.linkedin.com/sharing/share-offsite/?url=https://callmenezha.github.io/ide-vs-notebook.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
+          href="https://reddit.com/submit?url=https://callmenezha.github.io/ide-vs-notebook.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
+          href="https://facebook.com/sharer/sharer.php?u=https://callmenezha.github.io/ide-vs-notebook.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
+          href="https://api.whatsapp.com/send?text=Features - https://callmenezha.github.io/ide-vs-notebook.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
+          href="https://telegram.me/share/url?text=Features&amp;url=https://callmenezha.github.io/ide-vs-notebook.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+    </div>
+  </footer>
+  <div>
+  </div>
+</main>
+
+    </div>
+    <footer class="flex w-full text-xs justify-center mt-10 mb-6 text-zinc-500 dark:text-zinc-400">
+        <div class="px-4">
+            <span>©2023&nbsp;&#8226;&nbsp;</span>ZiJian Jiang (Github@CallmeNeZha)
+        </div>
+    </footer>
+
+
+    <script>
+        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        let themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+    <!--  -->
+</body>
+
+</html>

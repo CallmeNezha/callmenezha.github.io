@@ -18,3 +18,8 @@ Looking at the entry of an api object reminds me of level of detail. Abstracting
 # 2023-03-18 22:22
 At its core, the design of software architecture is about isolation and classification. So where to put the responsibility(api of class, objects and modules) matters.
 
+# 2023-03-19 21:16
+I finally realized that VScode use an 'factory 'interface class that only contains one method, because VScode main designer comes from technical background in Eclipse(Java), so they are still not get used to treating functions as first-class memebers of programming languages. So I don't think it's necessary to have `XXfactory` classes which implement only one `createXX` method, I can just use function which named `XXprovider` or `XXforger` instead, it's much simpler.
+
+# 2023-03-20 21:41
+Why do I like to use Pycharm/VScode to develop software, but use Jupyter to analyze and transform data? 
