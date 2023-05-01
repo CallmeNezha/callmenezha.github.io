@@ -1,4 +1,4 @@
-Title: Book Review: "The Next 5000 Days by Kevin Kelly"
+Title: Book Review: "The Next 5000 Days" by Kevin Kelly
 Date: 2023-05-01 21:35
 Category: Book Reviews
 Tags: Book Reviews
@@ -17,7 +17,9 @@ The book is divided into seven topics:
 
 In the first chapter he talked about the mirror world, or I can say the metaworld. Augmented reality, virtual reality, etc. The final purpose of building this metaworld he thinks is to make millions of people work together becomes possible. As we all know, the biggest advantage of the Internet is that it allows information to spread around the world almost for free. Furthermore, when the mirror world becomes a reality, people will be able to have almost the same understanding of the same thing. Information is like lubricant, reducing friction when people work together. I'm sure it will become more efficient, but I also very much doubt how efficient it will be, since the human being will be that limit. This book gives a partial answer to my question in Chapter 2, AI will augment humans. And talk about the side effect of AI. He belives the advantages of new technolgy will outweigh the disadvantages day by days. In Chapter 4, he belives Asia will be the backbone of technological development, and multiculturalism will eventually converge. In Chapters 5 and 6, he talks about how people should continue to learn and stay positive in the future. And use the example of how big companies lose to small companies in the market as an analogy of how people will succeed in the future world. Overall, this is a good book worth reading.
 
+
 Great statements:
+
 1. AI and other tools will be used to modify our bodies and other biological phenomena in "New Biology Era".
 2. Leave the boring work to AI and do the creative work.
 3. Almighty God did not create the world, but the creatures that could create the world.
