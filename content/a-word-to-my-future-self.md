@@ -23,3 +23,6 @@ I finally realized that VScode use an 'factory 'interface class that only contai
 
 # 2023-03-20 21:41
 Why do I like to use Pycharm/VScode to develop software, but use Jupyter to analyze and transform data? 
+
+# 2023-05-15 23:35
+I think LSP is more formal than DAP because it uses JSON-RPC v2.0 instead of using a custom message protocol.
