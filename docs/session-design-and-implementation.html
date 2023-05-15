@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content="Pelican" />
-    <title>Book Review: "The Next 5000 Days" by Kevin Kelly</title>
+    <title>Session design and implementation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
     <link rel="stylesheet" type="text/css" href="https://callmenezha.github.io/theme/css/main.css" />
@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://callmenezha.github.io/theme/css/stork.css">
     <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
         href="https://callmenezha.github.io/theme/css/stork-dark.css">
-<meta name="description" content="I heard about Kevin Kelly a few years ago and read his famous book "Inevitable" published in 2016. "The Next 5000 Days" was published this year..." />
+<meta name="description" content="Designing a new protocol and implementing it with maximum scalability is nontrivial, we need to consider these. Understand the needs of your..." />
     <script>
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
                 '(prefers-color-scheme: dark)').matches)) {
@@ -78,7 +78,7 @@
                     </svg>
                 </li>
                 <li class="flex items-center">
-                    <a href="https://callmenezha.github.io/category/book-reviews.html">Book Reviews</a>
+                    <a href="https://callmenezha.github.io/category/network.html">Network</a>
                 </li>
                 <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                     <path
@@ -89,12 +89,12 @@
 
 <main>
   <header>
-    <h1 class="font-semibold text-3xl my-2">Book Review: "The Next 5000 Days" by Kevin Kelly</h1>
+    <h1 class="font-semibold text-3xl my-2">Session design and implementation</h1>
     <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
-        <time>May 01, 2023</time>
+        <time>May 15, 2023</time>
         <div>
-          <span>&nbsp;·&nbsp;2 min read</span>
+          <span>&nbsp;·&nbsp;4 min read</span>
         </div>
         <div>
           <span>&nbsp;·&nbsp;Zijian Jiang</span>
@@ -102,6 +102,12 @@
       </div>
     </footer>
   </header>
+  <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
+    <summary class="text-lg font-bold">Table of contents</summary>
+    <div class="mx-4 px-4 underline">
+      <div id="toc"><ul><li><a class="toc-href" href="#understand-the-needs-of-your-communication-scenario" title="Understand the needs of your communication scenario">Understand the needs of your communication scenario</a></li><li><a class="toc-href" href="#commmon-key-patterns-of-design" title="Commmon key patterns of design">Commmon key patterns of design</a></li><li><a class="toc-href" href="#layer-by-layer-implement" title="Layer by layer implement">Layer by layer implement</a></li></ul></div>
+    </div>
+  </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
               prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
               prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
@@ -118,54 +124,90 @@
               prose-code:font-light
               prose-img:rounded-md
               ">
-    <p>I heard about Kevin Kelly a few years ago and read his famous book "Inevitable" published in 2016. "The Next 5000 Days" was published this year when he was 71 years old. The book tells about the vision of the future after 5000 days and how technology will change the world.</p>
-<p>The book is divided into seven topics:</p>
+    <p>Designing a new protocol and implementing it with maximum scalability is nontrivial, we need to consider these.</p>
+<h2 id="understand-the-needs-of-your-communication-scenario">Understand the needs of your communication scenario</h2>
+<p>By comprehending the specific requirements and objectives of the communication, you can tailor the protocol to meet those needs effectively. Here are some key aspects to consider:</p>
 <ol>
-<li>A future where millions of people work together</li>
-<li>The current state of the evolving digital economy</li>
-<li>All industries will be reshaped by technology</li>
-<li>The Age of Asia and the Geopolitics of Technology</li>
-<li>Listen to technology and see the future</li>
-<li>The Dilemma of Innovation and Success</li>
-<li>The final chapter: The world after 5000 days, Technology widens options</li>
+<li>
+<p>Communication Goals: Determine the purpose of the communication. Are you transferring data, controlling devices, or exchanging messages? Clarify the goals and objectives of the protocol to ensure it aligns with the intended functionality.</p>
+</li>
+<li>
+<p>Participants: Identify the entities involved in the communication. Are there clients, servers, peers, or a combination? Understand their roles, responsibilities, and the types of interactions they will have.</p>
+</li>
+<li>
+<p>Communication Model: Determine whether the communication will follow a client-server model, peer-to-peer model, or another model entirely. This will influence the design decisions regarding message flow, addressing, and data exchange.</p>
+</li>
+<li>
+<p>Network Environment: Consider the characteristics of the network environment in which the protocol will operate. Is it a local area network (LAN) or a wide area network (WAN)? Are there specific constraints like limited bandwidth, high latency, or unreliable connections?</p>
+</li>
+<li>
+<p>Security and Privacy Requirements: Evaluate the security and privacy needs of the communication scenario. Determine if encryption, authentication, or other security measures are necessary to protect data and ensure confidentiality, integrity, and authenticity.</p>
+</li>
+<li>
+<p>Performance Considerations: Understand the performance requirements, such as throughput, latency, and scalability. Consider whether the protocol needs to be optimized for efficient data transfer or real-time interactions.</p>
+</li>
+<li>
+<p>Error Handling and Reliability: Assess the importance of error handling, fault tolerance, and reliability in the communication scenario. Determine how errors will be detected, reported, and recovered to ensure robustness and resilience.</p>
+</li>
+<li>
+<p>Interoperability: If the protocol needs to interact with existing systems or protocols, consider compatibility and interoperability requirements. Determine if there are any standard protocols, formats, or APIs that need to be supported.</p>
+</li>
+<li>
+<p>Extensibility and Future Proofing: Anticipate potential future requirements and ensure the protocol design allows for flexibility and extensibility. Consider mechanisms for versioning, backward compatibility, and accommodating future enhancements.</p>
+</li>
 </ol>
-<p>In the first chapter he talked about the mirror world, or I can say the metaworld. Augmented reality, virtual reality, etc. The final purpose of building this metaworld he thinks is to make millions of people work together becomes possible. As we all know, the biggest advantage of the Internet is that it allows information to spread around the world almost for free. Furthermore, when the mirror world becomes a reality, people will be able to have almost the same understanding of the same thing. Information is like lubricant, reducing friction when people work together. I'm sure it will become more efficient, but I also very much doubt how efficient it will be, since the human being will be that limit. This book gives a partial answer to my question in Chapter 2, AI will augment humans. And talk about the side effect of AI. He belives the advantages of new technolgy will outweigh the disadvantages day by days. In Chapter 4, he belives Asia will be the backbone of technological development, and multiculturalism will eventually converge. In Chapters 5 and 6, he talks about how people should continue to learn and stay positive in the future. And use the example of how big companies lose to small companies in the market as an analogy of how people will succeed in the future world. Overall, this is a good book worth reading.</p>
-<p>Great statements:</p>
+<blockquote>
+<p>Don't design the wire protocol and transport layer protocol entirely by your self, it is important to leverage existing popular protocols and standards whenever possible.Go and see how popular protocols like JSON-RPC, XML-RPC, HTTP, SSH works. They fit your demands on transport layer well most of time. These established protocols have been widely adopted, thoroughly tested, and proven to be effective in various communication scenarios. And they provide a solid foundation and can save significant development effort.</p>
+</blockquote>
+<h2 id="commmon-key-patterns-of-design">Commmon key patterns of design</h2>
+<p>When designing and implementing computer network sessions, there are several common patterns that are often followed to ensure efficient and reliable communication. Here are some of the key patterns:</p>
 <ol>
-<li>AI and other tools will be used to modify our bodies and other biological phenomena in "New Biology Era".</li>
-<li>Leave the boring work to AI and do the creative work.</li>
-<li>Almighty God did not create the world, but the creatures that could create the world.</li>
-<li>Due to secondary effects, it is difficult to predict the impact of new creations. We didn't see traffic jams coming when we invented the car.</li>
-<li>If a technology makes life easier and allows people to spend more time with their families, it's good technology. </li>
-<li>Only when we see the lower limit of the application range of technology can we fully grasp it. Technology is far from what inventors expected. This is the essential law of development of science and technology. People use internet to watch porns.</li>
-<li>If you are successful now, it will be very difficult for you to get out of your current state. You may do everything you can to improve even a little bit. But change can involve life or death, and you could be left with nothing. The more successful you are, the more you want to pursue perfection. This pursuit of perfection cannot stop at all.</li>
-<li>Today is a good day, and it has to be a good day. Be grateful and embrace each day.</li>
+<li>
+<p>Client-Server Architecture: This is the most common pattern where one system (the client) initiates a request to another system (the server), which then processes the request and sends back a response. The client and server can be on different machines or on the same machine.</p>
+</li>
+<li>
+<p>Peer-to-Peer Architecture: In this pattern, multiple systems (peers) communicate and collaborate with each other without a centralized server. Each peer can act as both a client and a server, sharing resources and data directly.</p>
+</li>
+<li>
+<p>Request-Response Model: It involves a client sending a request to a server, and the server responding with the requested data or performing the requested action. This pattern is widely used in web applications, where clients send HTTP requests and receive HTTP responses.</p>
+</li>
+<li>
+<p>Publish-Subscribe Model: Also known as pub/sub, this pattern involves a publisher that sends messages to a topic or channel, and multiple subscribers who receive those messages. It is commonly used in messaging systems, event-driven architectures, and real-time data streaming.</p>
+</li>
+<li>
+<p>Stateful Sessions: In some scenarios, it is necessary to maintain session state between the client and server. This is achieved by establishing a session identifier or token that is used to associate subsequent requests from the client with the correct session state on the server. This pattern allows for maintaining context and preserving data across multiple requests.</p>
+</li>
+<li>
+<p>Connection-Oriented Communication: In certain cases, establishing a persistent connection between the client and server is beneficial. This pattern reduces the overhead of repeatedly establishing and tearing down connections for each request. Protocols like TCP (Transmission Control Protocol) provide reliable, connecti&szlig;on-oriented communication.</p>
+</li>
+<li>
+<p>Message-Oriented Communication: This pattern involves exchanging discrete messages between the communicating entities. Each message contains the necessary information for processing, and there is no need for a persistent connection. Protocols like UDP (User Datagram Protocol) are commonly used for message-oriented communication.</p>
+</li>
+<li>
+<p>Asynchronous Communication: Asynchronous patterns allow for non-blocking communication, where a client can send a request and continue its operation without waiting for an immediate response. The server processes the request and sends the response at a later time, usually through callbacks or event notifications.</p>
+</li>
 </ol>
+<p>These patterns can be combined and customized based on specific requirements and the nature of the application or system being developed. They provide a foundation for designing and implementing effective computer network sessions.</p>
+<h2 id="layer-by-layer-implement">Layer by layer implement</h2>
+<p>Implementing a network protocol layer by layer is a good practice. This approach, often referred to as the layered architecture or protocol stack, allows for modular and organized development of network protocols.</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
     <ul class="flex flex-wrap">
-      <a href="https://callmenezha.github.io/tag/book-reviews.html">
+      <a href="https://callmenezha.github.io/tag/network.html">
         <li
           class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
-          Book Reviews
+          Network
         </li>
       </a>
     </ul>
     <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
-      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-l-lg">
-        <a class="flex flex-col pr-2" href="https://callmenezha.github.io/protocol-design-and-implementation-rules.html">
-          <div class="mx-4 py-2 text-left">
-            <p class="text-zinc-500 dark:text-neutral-400 text-sm">« PREV PAGE</p>
-            <p class="text-left py-1 hover:underline">Protocol Design and Implementation Rules</p>
-          </div>
-        </a>
-      </div>
+      <div class="w-1/2 rounded-l-lg"></div>
       <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
-        <a class="flex flex-col" href="https://callmenezha.github.io/debug-adapter-protocol-my-first-impression.html">
+        <a class="flex flex-col" href="https://callmenezha.github.io/book-review-the-next-5000-days-by-kevin-kelly.html">
           <div class="text-right mx-4 py-2">
             <p class="text-zinc-500 dark:text-neutral-400 text-sm">NEXT PAGE »</p>
-            <p class="text-right py-1 hover:underline">Debug Adapter Protocol - My First Impression</p>
+            <p class="text-right py-1 hover:underline">Book Review: "The Next 5000 Days" by Kevin Kelly</p>
           </div>
         </a>
       </div>
@@ -173,7 +215,7 @@
     <div class="flex bg-zinc-200 dark:bg-zinc-700 py-2 rounded-lg justify-center space-x-2 text-xs">
       <ul>
         <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
-          href="https://twitter.com/intent/tweet/?text=Features&amp;url=https://callmenezha.github.io/book-review-the-next-5000-days-by-kevin-kelly.html">
+          href="https://twitter.com/intent/tweet/?text=Features&amp;url=https://callmenezha.github.io/session-design-and-implementation.html">
           <li class="bg-gray-900 p-1 text-white rounded-md">
             <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
           </li>
@@ -181,7 +223,7 @@
       </ul>
       <ul>
         <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
-          href="https://www.linkedin.com/sharing/share-offsite/?url=https://callmenezha.github.io/book-review-the-next-5000-days-by-kevin-kelly.html">
+          href="https://www.linkedin.com/sharing/share-offsite/?url=https://callmenezha.github.io/session-design-and-implementation.html">
           <li class="bg-gray-900 p-1 text-white rounded-md">
             <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
           </li>
@@ -189,7 +231,7 @@
       </ul>
       <ul>
         <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
-          href="https://reddit.com/submit?url=https://callmenezha.github.io/book-review-the-next-5000-days-by-kevin-kelly.html">
+          href="https://reddit.com/submit?url=https://callmenezha.github.io/session-design-and-implementation.html">
           <li class="bg-gray-900 p-1 text-white rounded-md">
             <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
           </li>
@@ -197,7 +239,7 @@
       </ul>
       <ul>
         <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
-          href="https://facebook.com/sharer/sharer.php?u=https://callmenezha.github.io/book-review-the-next-5000-days-by-kevin-kelly.html">
+          href="https://facebook.com/sharer/sharer.php?u=https://callmenezha.github.io/session-design-and-implementation.html">
           <li class="bg-gray-900 p-1 text-white rounded-md">
             <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
           </li>
@@ -205,7 +247,7 @@
       </ul>
       <ul>
         <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
-          href="https://api.whatsapp.com/send?text=Features - https://callmenezha.github.io/book-review-the-next-5000-days-by-kevin-kelly.html">
+          href="https://api.whatsapp.com/send?text=Features - https://callmenezha.github.io/session-design-and-implementation.html">
           <li class="bg-gray-900 p-1 text-white rounded-md">
             <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
           </li>
@@ -213,7 +255,7 @@
       </ul>
       <ul>
         <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
-          href="https://telegram.me/share/url?text=Features&amp;url=https://callmenezha.github.io/book-review-the-next-5000-days-by-kevin-kelly.html">
+          href="https://telegram.me/share/url?text=Features&amp;url=https://callmenezha.github.io/session-design-and-implementation.html">
           <li class="bg-gray-900 p-1 text-white rounded-md">
             <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
           </li>
