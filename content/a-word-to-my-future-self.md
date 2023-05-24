@@ -26,3 +26,6 @@ Why do I like to use Pycharm/VScode to develop software, but use Jupyter to anal
 
 # 2023-05-15 23:35
 I think LSP is more formal than DAP because it uses JSON-RPC v2.0 instead of using a custom message protocol.
+
+# 2023-05-24 21:32
+Recently i am using Sphinx as documentation engine for our python project. Thanks to blog: https://bylr.info/articles/2022/05/10/api-doc-with-sphinx-autoapi/ i can construct the documentation project for our python project step by step, Sphnix is powerful and highly customizable maybe i should dig deeper for extensive usage.
