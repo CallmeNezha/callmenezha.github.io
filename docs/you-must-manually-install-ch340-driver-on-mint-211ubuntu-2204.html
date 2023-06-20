@@ -104,7 +104,7 @@
   <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
     <summary class="text-lg font-bold">Table of contents</summary>
     <div class="mx-4 px-4 underline">
-      <div id="toc"><ul><li><a class="toc-href" href="#install-driver" title="Install Driver">Install Driver</a></li></ul></div>
+      <div id="toc"><ul><li><a class="toc-href" href="#install-driver" title="Install Driver">Install Driver</a></li><li><a class="toc-href" href="#devttyusb0" title="/dev/ttyUSB0">/dev/ttyUSB0</a></li><li><a class="toc-href" href="#set-proper-permission-to-devttyusb0" title="Set proper permission to /dev/ttyUSB0">Set proper permission to /dev/ttyUSB0</a></li><li><a class="toc-href" href="#load-kernel-module-at-boostrap" title="Load kernel module at boostrap">Load kernel module at boostrap</a></li></ul></div>
     </div>
   </details>
   <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
@@ -125,8 +125,20 @@
               ">
     <p>Most linux have built in driver for ch340, except for Mint 21.1/Ubuntu 22.04.</p>
 <h2 id="install-driver">Install Driver</h2>
-<p>Go to https://github.com/juliagoda/CH341SER, and follow the instruction. Basically all you need to do is to clone the repo and run make and make load. You might want to sudo them if you get permission denied.</p>
+<p>Go to <a href="https://github.com/juliagoda/CH341SER">https://github.com/juliagoda/CH341SER</a>, and follow the instruction. Basically all you need to do is to clone the repo and run make and make load. You might want to sudo them if you get permission denied.</p>
 <p><img alt="embeded_man" src="./images/embeded_man.png"/></p>
+<h2 id="devttyusb0">/dev/ttyUSB0</h2>
+<p>In order to make /dev/ttyUSB0 accesible, you have to <code>sudo apt autoremove brltty</code>.</p>
+<h2 id="set-proper-permission-to-devttyusb0">Set proper permission to <code>/dev/ttyUSB0</code></h2>
+<p>Depending on your root permissions, you might want to run <code>sudo chmod a+rw /dev/ttyUSB0</code>.</p>
+<h2 id="load-kernel-module-at-boostrap">Load kernel module at boostrap</h2>
+<p>Copy kernel module to the drivers directory.</p>
+<p><code>$ sudo cp ch34x.ko /lib/modules/$(uname -r)/kernel/drivers//usb/serial/</code></p>
+<p>Add the simple name of module to the file /etc/modules. You can edit the file or just append to it as shown here.</p>
+<p><code>$ echo 'ch34x' | sudo tee -a /etc/modules</code></p>
+<p>Update the list of module dependencies.</p>
+<p><code>$ sudo depmod</code></p>
+<p>Reboot the computer and voila, it worked.</p>
     <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
   </div>
   <footer class="flex flex-col mt-10 ">
