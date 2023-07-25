@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Pelican" />
+    <title>Learn X Window System.</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+    <link rel="stylesheet" type="text/css" href="https://callmenezha.github.io/theme/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://callmenezha.github.io/theme/css/pygment.css" />
+    <link rel="stylesheet" href="https://callmenezha.github.io/theme/css/stork.css">
+    <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
+        href="https://callmenezha.github.io/theme/css/stork-dark.css">
+<meta name="description" content="X11 is a very old, so old that it runs almost on every 100% Linux desktop distribution (1984-2023, last stable release is 11 years old, X11R7.7 /..." />
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
+    dark:bg-neutral-900 dark:text-zinc-300 container mx-auto justify-center md:px-3 ">
+    <nav class="sm:flex sm:justify-between xl:ml-32 pl-4 items-center">
+        <div class="flex pt-4">
+            <h1 class="font-semibold text-2xl"><a href="https://callmenezha.github.io/">Zijian Jiang's Journal</a></h1>
+            <button id="theme-toggle" type="button"
+                class="text-zinc-700 dark:text-zinc-400 rounded-full focus:outline-none text-sm ml-2 p-1">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <ul class="flex flex-wrap lg:mr-24 md:pt-0">
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="https://callmenezha.github.io/categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/about.html">About</a></li>
+        </ul>
+    </nav>
+    <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
+        <nav class="text-zinc-800 dark:text-zinc-300 mt-12 pb-2 md:mt-16" aria-label="Breadcrumb">
+            <ul class="p-0 inline-flex items-center">
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        Home
+                    </a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/categories.html">Categories</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/category/linux.html">Linux</a>
+                </li>
+                <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                        d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                </svg>
+            </ul>
+        </nav>
+
+<main>
+  <header>
+    <h1 class="font-semibold text-3xl my-2">Learn X Window System.</h1>
+    <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
+      <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
+        <time>七月 25, 2023</time>
+        <div>
+          <span>&nbsp;·&nbsp;6 min read</span>
+        </div>
+        <div>
+          <span>&nbsp;·&nbsp;Zijian Jiang</span>
+        </div>
+      </div>
+    </footer>
+  </header>
+  <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
+    <summary class="text-lg font-bold">Table of contents</summary>
+    <div class="mx-4 px-4 underline">
+      <div id="toc"><ul><li><a class="toc-href" href="#what-is-window-system" title="What is window system?">What is window system?</a></li><li><a class="toc-href" href="#before-the-linux-desktop-is-working" title="Before the Linux desktop is working.">Before the Linux desktop is working.</a></li><li><a class="toc-href" href="#why-x-is-a-server" title="Why X is a server?">Why X is a server?</a></li><li><a class="toc-href" href="#why-there-are-so-many-desktop-distributions-and-window-managers" title="Why there are so many Desktop Distributions and Window Managers?">Why there are so many Desktop Distributions and Window Managers?</a></li><li><a class="toc-href" href="#conclusion" title="Conclusion">Conclusion</a></li></ul></div>
+    </div>
+  </details>
+  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+              prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
+              prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
+              prose-pre:bg-zinc-200 prose-pre:text-zinc-800
+              dark:prose-pre:bg-zinc-800 dark:prose-pre:text-zinc-200
+              prose-blockquote:text-zinc-800
+              dark:prose-blockquote:text-zinc-200
+              prose-a:text-gray-500
+              dark:prose-a:text-gray-400
+              dark:prose-strong:text-zinc-200 
+              dark:prose-code:text-zinc-200
+              dark:prose-code:bg-zinc-800
+              prose-code:bg-zinc-200
+              prose-code:font-light
+              prose-img:rounded-md
+              ">
+    <p>X11 is a very old, so old that it runs almost on every 100% Linux desktop distribution (1984-2023, last stable release is 11 years old, X11R7.7 / 6 June 2012 according to Wikipedia).</p>
+<p>So Wayland is coming along the road, everybody(ok, almost everybody) think Wayland is the future, why we need to learn X Window System at present? Because as we said, it still runs almost on 100% Linux desktop distribution as default display server. And because creation of anything cannot escape its historical reasons, if you want to fully understand the problems Wayland is solving, it is recommanded looking back to its ancestor X.</p>
+<h2 id="what-is-window-system">What is window system?</h2>
+<p>Before people get used to graphical desktop display on LCD screen or CRT, there is a long history of computer displaying system evolving from hole puncher, paper printer to famous video terminal VT100 which can only display 24x80(24 rows, 80 characters) green characters on the screen until graphical user interface came in.</p>
+<p>Photo of the hole-punch computer released by IBM in 1964. Now you could write the program (punch holes in the tape), input the program (put the tape into the reader) and have the computer read the results from the punched tape, of course in digits. The REPL (read eval print loop) is working! And the program has an entity... Cool... People used hole-punch method almost half a century.
+<img alt="Hole Puncher computer published by IBM in 1964" src="./images/hole-puncher.jpeg"/></p>
+<p>Photo of the teleprinter(teletypewriter, teletype or TTY) (yeh, this the thing Linux I/O files tty0~tty8 , ttyUSB0, tty... named of) Teletype Model 33 ASR, with punched tape reader and punch, usable as a computer terminal.
+<img alt="Teletype Model 33 ASR" src="./images/ASR-33_at_CHM.agr.jpg"/></p>
+<p>Photo of video terminal VT100, a text display with 80 columns and 24 rows.
+<img alt="VT100" src="./images/440px-DEC_VT100_terminal.jpeg"/></p>
+<p>Photo of  a lecture by James Gettys. This video has been recorded on February, 1991. 
+<img alt="X11 history" src="./images/x11-on-crt.png"/>
+<img alt="X11 screenshot" src="./images/interix_twm.png"/></p>
+<p>It can be seen that the graphical desktop of the system has not changed much in 30 years.</p>
+<p>Back to the title, the window system is a windowing system for bitmap displays, provides the basic framework for a GUI environment: drawing and moving windows on the display device and interacting with a mouse and keyboard, because we can have multiple windows layout on the screen displaying different types of contents. </p>
+<h2 id="before-the-linux-desktop-is-working">Before the Linux desktop is working.</h2>
+<p>Remember this, a Linux system doesn't need a desktop to work, a desktop is just a bunch of programs running to decorate your screen and allow you to work comfortably.</p>
+<p>Let's see the X Window System processes runned on Ubuntu20.04.
+<img alt="ubuntu xorg pstree" src="./images/ubuntu-xorg-pstree.png"/></p>
+<p>You can see all the Xorg related processes spawned by <code>gdm3</code> which is GNOME display manager aka desktop environment responsible for managing desktop displaying stuff. </p>
+<div class="highlight"><pre><span></span><code>           &boxvr;&boxh;gdm3(1011)&boxh;&boxhd;&boxh;gdm-session-wor(1397)&boxh;&boxhd;&boxh;gdm-x-session(1498)&boxh;&boxhd;&boxh;Xorg(1500)&boxh;&boxhd;&boxh;{Xorg}(1512)
+           &boxv;            &boxv;                       &boxv;                     &boxv;            &boxur;&boxh;{Xorg}(1518)
+           &boxv;            &boxv;                       &boxv;                     &boxvr;&boxh;gnome-session-b(1521)&boxh;&boxhd;&boxh;ssh-agent(1588)
+           &boxv;            &boxv;                       &boxv;                     &boxv;                       &boxvr;&boxh;{gnome-session-b}(1614)
+           &boxv;            &boxv;                       &boxv;                     &boxv;                       &boxur;&boxh;{gnome-session-b}(1615)
+           &boxv;            &boxv;                       &boxv;                     &boxvr;&boxh;{gdm-x-session}(1499)
+           &boxv;            &boxv;                       &boxv;                     &boxur;&boxh;{gdm-x-session}(1519)
+           &boxv;            &boxv;                       &boxvr;&boxh;{gdm-session-wor}(1398)
+           &boxv;            &boxv;                       &boxur;&boxh;{gdm-session-wor}(1399)
+           &boxv;            &boxvr;&boxh;{gdm3}(1012)
+           &boxv;            &boxur;&boxh;{gdm3}(1013)
+</code></pre></div>
+<p>If you enter coomand <code>sudo pkill X</code> in terminal it will killall X window manager processes found in this session. And the screen will blackout for several seconds then turn you back into login page (because in system startup script there is an infinite loop to reboot desktop environment in case of accidentally crash of desktop program).</p>
+<blockquote>
+<p>Wait a second! What is X.org?</p>
+</blockquote>
+<p>Like all the great works began with protocol design. X11 is just the network protocol that&rsquo;s responsible for delivering payloads between an X Client (application) and an X Server (display). These messages typically carry primitive drawing commands like "draw a white box", "write these characters at this position", "the left button is clicked" etc. Fundamentally, X is a family of protocols, whereas X11 is the 11th version of the X protocol. X.org on the other hand is the software implemention of X protocol.</p>
+<p><img alt="X11 Architecture" src="./images/X11.webp"/></p>
+<blockquote>
+<p>X11 is an extensible protocol. Therefore, developers can easily add additional features to the protocol without breaking the existing clients.
+By design, X11 is network-transparent. This allows the possibility of running the client and the server either on the same machine or different ones. A client and a server can also communicate over the Internet through an encrypted network session.
+On the same host, these messages are delivered through UNIX sockets for efficient communication.</p>
+</blockquote>
+<p>It is worth mentioned that, depends on different Linux distributions configuration, there are at least 3-4 number of non-graphical sessions you can use after system boot by default, check out how many TTY has been created, you can goto <code>/dev</code> directory, there must be files named <code>tty1</code>, <code>tty2</code>~<code>tty[N]</code>. My <code>Ubuntu 20.04 LTS</code> uses <code>tty1</code> and <code>tty2</code> as desktop sessions where window manager runs and from which we login, <code>tty3</code>~<code>tty6</code> are the non-graphical sessions. You can press <code>Ctrl+Alt+F3</code> to checkout <code>tty3</code>(suddenly back to 1990), don't panic when desktop disappears, you can always press <code>Ctrl+Alt+F2</code> to switch back. </p>
+<p><img alt="Non graphical tty" src="./images/ubuntu-tty.png"/></p>
+<h2 id="why-x-is-a-server">Why X is a server?</h2>
+<blockquote>
+<p>If there is a competition resource, there requires a server to manage it.</p>
+</blockquote>
+<p>The screen clearly becomes a competitive resource that all applications want to take advantage of. A compositor must needed to draw every application pixmap into their own rectangle window and deal with overlap, moving, resizing stuff. In face, the word compositor is an alias of display manager in the communication of developers.</p>
+<p><img alt="X11 Architecture" src="./images/x11-architecture.png"/></p>
+<p>So where is UI application draw into is called off-screen buffer which is just a memory allocated to application as a canvas.</p>
+<p><img alt="Wayland Qt process" src="./images/wayland-multi-process.png"/></p>
+<p>As you can see, its distributed C/S(client server) architecture design allows the user application running on remote machine and X11 messages sends between client and server.</p>
+<h2 id="why-there-are-so-many-desktop-distributions-and-window-managers">Why there are so many Desktop Distributions and Window Managers?</h2>
+<blockquote>
+<p>In the Linux world, if you don't like it, you can replace it, not to mention everyone's different appreciation of beauty. </p>
+</blockquote>
+<p>As X server is only responsible for event handling and displaying, there is a huge space for desktop developers/team/publisher to work on and distribute different styles of window frames, docks, menubars and widgets to fullfill everyone's needs, some are fancy like DeepIn, some are unpretentious like Xfce. 
+And window manager is just another program resides outside X server to provide window dragging, resizing, overlaping, window appearance management functionalities.</p>
+<p><img alt="Deepin OS Snapshot" src="./images/deepin-snapshot.jpeg"/>
+<img alt="Xfce4 Snapshot" src="./images/xfce4-snapshot.png"/></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>In conclusion, learning the X Window System (X11) is still relevant and valuable despite the emergence of newer display servers like Wayland. X11 continues to be the default display server for almost all Linux desktop distributions, making it essential for understanding and configuring graphical environments effectively. Its historical significance and widespread usage provide valuable insights into the evolution of graphical user interfaces and the problems that newer display servers aim to solve.</p>
+<p>Moreover, X11's network-transparent design allows applications to run on remote machines, making it suitable for distributed computing scenarios. Additionally, the extensive customizability of X11 has led to a diverse range of desktop environments, window managers, and user interface styles, offering users various options to suit their preferences.</p>
+<p>While Wayland and other newer display servers are gaining popularity, X11's presence in the Linux ecosystem remains substantial. Therefore, familiarizing oneself with X11 is a beneficial endeavor, especially for Linux enthusiasts, developers, and anyone interested in computer graphics and graphical user interfaces.</p>
+    <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
+  </div>
+  <footer class="flex flex-col mt-10 ">
+    <ul class="flex flex-wrap">
+      <a href="https://callmenezha.github.io/tag/linux.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          Linux
+        </li>
+      </a>
+      <a href="https://callmenezha.github.io/tag/x-window-system.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          X Window System
+        </li>
+      </a>
+    </ul>
+    <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+      <div class="w-1/2 rounded-l-lg"></div>
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
+        <a class="flex flex-col" href="https://callmenezha.github.io/xstatic-a-python-packaging-standard-for-bundling-external-static-files-as-python-packages.html">
+          <div class="text-right mx-4 py-2">
+            <p class="text-zinc-500 dark:text-neutral-400 text-sm">NEXT PAGE »</p>
+            <p class="text-right py-1 hover:underline">XStatic, a Python packaging standard for bundling external static files as Python packages</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="flex bg-zinc-200 dark:bg-zinc-700 py-2 rounded-lg justify-center space-x-2 text-xs">
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
+          href="https://twitter.com/intent/tweet/?text=Features&amp;url=https://callmenezha.github.io/learn-x-window-system.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
+          href="https://www.linkedin.com/sharing/share-offsite/?url=https://callmenezha.github.io/learn-x-window-system.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
+          href="https://reddit.com/submit?url=https://callmenezha.github.io/learn-x-window-system.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
+          href="https://facebook.com/sharer/sharer.php?u=https://callmenezha.github.io/learn-x-window-system.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
+          href="https://api.whatsapp.com/send?text=Features - https://callmenezha.github.io/learn-x-window-system.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
+          href="https://telegram.me/share/url?text=Features&amp;url=https://callmenezha.github.io/learn-x-window-system.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+    </div>
+  </footer>
+  <div>
+  </div>
+</main>
+
+    </div>
+    <footer class="flex w-full text-xs justify-center mt-10 mb-6 text-zinc-500 dark:text-zinc-400">
+        <div class="px-4">
+            <span>©2023&nbsp;&#8226;&nbsp;</span>ZiJian Jiang (Github@CallmeNeZha)
+        </div>
+    </footer>
+
+
+    <script>
+        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        let themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+    <!--  -->
+</body>
+
+</html>
