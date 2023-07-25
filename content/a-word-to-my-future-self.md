@@ -29,3 +29,10 @@ I think LSP is more formal than DAP because it uses JSON-RPC v2.0 instead of usi
 
 # 2023-05-24 21:32
 Recently i am using Sphinx as documentation engine for our python project. Thanks to blog: https://bylr.info/articles/2022/05/10/api-doc-with-sphinx-autoapi/ i can construct the documentation project for our python project step by step, Sphnix is powerful and highly customizable maybe i should dig deeper for extensive usage.
+
+# 2023-05-32 15:27
+The essence of pushing a program into a software product is documentation.
+
+# 2023-07-25 11:21
+No time no post, busy on working as an embeded system programmer LOL.
+
