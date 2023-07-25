@@ -1,7 +1,7 @@
 Title: XStatic, a Python packaging standard for bundling external static files as Python packages
-Date: 2023-07-25 00:46
+Date: 2023-06-22 00:46
 Category: Python
-Tags: Python, Packaging, Deprecated
+Tags: Python, Packaging
 
 XStatic is a Python packaging standard for bundling external static files as Python packages. It allows easy usage of these files across operating systems and package management systems. With a focus on minimalism, XStatic packages provide only the necessary files, making it convenient to handle static assets maintained by others. It simplifies virtual environment creation and supports different platforms, promoting efficient distribution and integration of static files in Python projects.
 
