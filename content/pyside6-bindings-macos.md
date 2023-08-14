@@ -1,4 +1,4 @@
-Title: Generates Python bindings for the Qt6 library with PySide6.
+Title: Generates Python bindings for the Qt6 library with PySide6 on MacOS
 Date: 2023-07-29 15:23
 Category: Qt
 Tags: Qt, PySide6, Python
