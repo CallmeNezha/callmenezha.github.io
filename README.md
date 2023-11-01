@@ -20,4 +20,4 @@ from others.
 4. `git commit -m"new post"`
 5. `git push`
 
-![gameboy](./images/embeded_man.png)
+![gameboy](./content/images/embeded_man.png)
