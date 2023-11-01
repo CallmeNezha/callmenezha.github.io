@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content="Pelican" />
+    <title>Generates Python bindings for the Qt6 library with PySide6 on Windows 11</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Slab|Ruda" />
+    <link rel="stylesheet" type="text/css" href="https://callmenezha.github.io/theme/css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://callmenezha.github.io/theme/css/pygment.css" />
+    <link rel="stylesheet" href="https://callmenezha.github.io/theme/css/stork.css">
+    <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)"
+        href="https://callmenezha.github.io/theme/css/stork-dark.css">
+<meta name="description" content="This blog is a companion piece to my early blog Generates Python bindings for the Qt6 library with PySide6 on MacOS, but on Windows 11 with..." />
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col max-w-7xl lg:max-w-none text-zinc-800 bg-neutral-100 
+    dark:bg-neutral-900 dark:text-zinc-300 container mx-auto justify-center md:px-3 ">
+    <nav class="sm:flex sm:justify-between xl:ml-32 pl-4 items-center">
+        <div class="flex pt-4">
+            <h1 class="font-semibold text-2xl"><a href="https://callmenezha.github.io/">Zijian Jiang's Journal</a></h1>
+            <button id="theme-toggle" type="button"
+                class="text-zinc-700 dark:text-zinc-400 rounded-full focus:outline-none text-sm ml-2 p-1">
+                <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+                <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                </svg>
+            </button>
+        </div>
+        <ul class="flex flex-wrap lg:mr-24 md:pt-0">
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/archives.html">Archive</a></li>
+            <li class="mr-4 pt-6"><a                     href="https://callmenezha.github.io/categories.html">Categories</a></li>
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/tags.html">Tags</a></li>
+            <li class="mr-4 pt-6"><a  href="https://callmenezha.github.io/about.html">About</a></li>
+        </ul>
+    </nav>
+    <div class="flex-grow md:max-w-screen-md md:mx-auto md:w-3/4 px-4">
+        <nav class="text-zinc-800 dark:text-zinc-300 mt-12 pb-2 md:mt-16" aria-label="Breadcrumb">
+            <ul class="p-0 inline-flex items-center">
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/" class="text-zinc-800 dark:text-zinc-300 inline-flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                            </path>
+                        </svg>
+                        Home
+                    </a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/categories.html">Categories</a>
+                    <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 320 512">
+                        <path
+                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                    </svg>
+                </li>
+                <li class="flex items-center">
+                    <a href="https://callmenezha.github.io/category/qt.html">Qt</a>
+                </li>
+                <svg class="fill-current w-3 h-3 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                        d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z" />
+                </svg>
+            </ul>
+        </nav>
+
+<main>
+  <header>
+    <h1 class="font-semibold text-3xl my-2">Generates Python bindings for the Qt6 library with PySide6 on Windows 11</h1>
+    <footer class="flex text-sm text-zinc-800 dark:text-zinc-400">
+      <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
+        <time>十一月 01, 2023</time>
+        <div>
+          <span>&nbsp;·&nbsp;9 min read</span>
+        </div>
+        <div>
+          <span>&nbsp;·&nbsp;Zijian Jiang</span>
+        </div>
+      </div>
+    </footer>
+  </header>
+  <details class="flex flex-col my-6 p-4 bg-zinc-200 dark:bg-zinc-800 rounded-lg">
+    <summary class="text-lg font-bold">Table of contents</summary>
+    <div class="mx-4 px-4 underline">
+      <div id="toc"><ul><li><a class="toc-href" href="#walkthrough-examples-on-windows" title="Walkthrough examples on Windows">Walkthrough examples on Windows</a><ul><li><a class="toc-href" href="#install-qt-environment" title="Install Qt environment">Install Qt environment</a></li><li><a class="toc-href" href="#requirements" title="Requirements">Requirements</a></li><li><a class="toc-href" href="#option-1-install-pyside6" title="(Option 1) Install PySide6!">(Option 1) Install PySide6!</a></li><li><a class="toc-href" href="#option-2-download-pyside-source-code-and-build-from-source" title="(Option 2) Download PySide source code and build from source!">(Option 2) Download PySide source code and build from source!</a><ul><li><a class="toc-href" href="#1-install-visual-studio-2019-64bit-and-c-toolchain-as-needed" title="1. Install Visual Studio 2019 64bit and C++ toolchain as needed.">1. Install Visual Studio 2019 64bit and C++ toolchain as needed.</a></li><li><a as="" class="toc-href" code="" forget="" href="#2-install-qt-and-dont-forget-install-source-code-as-well" install="" source="" t="" title="2. Install Qt and don" well.'="">2. Install Qt and don't forget install source code as well.</a></li><li><a class="toc-href" href="#3-download-and-setup-clang-which-used-for-c-python-binding-generation" title="3. Download and setup Clang which used for C++ python binding generation.">3. Download and setup Clang which used for C++ python binding generation.</a></li><li><a class="toc-href" href="#4-setup-conda-environment-for-pyside-compilation" title="4. Setup conda environment for pyside compilation:">4. Setup conda environment for pyside compilation:</a></li><li><a class="toc-href" href="#5-cloning-the-official-repository-can-be-done-by" title="5. Cloning the official repository can be done by:">5. Cloning the official repository can be done by:</a></li><li><a class="toc-href" href="#6-building-pyside" title="6. Building PySide">6. Building PySide</a></li><li><a class="toc-href" href="#issues-that-i-came-across" title="ISSUES THAT I came across.">ISSUES THAT I came across.</a></li><li><a class="toc-href" href="#tips-of-pakcage-installation" title="Tips of pakcage installation.">Tips of pakcage installation.</a></li></ul></li><li><a class="toc-href" href="#test-pyside6-installation_1" title="Test PySide6 installation">Test PySide6 installation</a></li><li><a class="toc-href" href="#write-c-generate-python-bindings-for-usage" title="Write C++ generate Python bindings for usage.">Write C++ generate Python bindings for usage.</a><ul><li><a class="toc-href" href="#level-1-generate-python-bindings-for-a-non-qt-c-library" title="Level 1: Generate Python bindings for a non-Qt C++ library">Level 1: Generate Python bindings for a non-Qt C++ library</a></li></ul></li><li><a class="toc-href" href="#level-2-make-a-qt-c-application-scriptable_1" title="Level 2: Make a Qt C++ application scriptable">Level 2: Make a Qt C++ application scriptable</a></li><li><a class="toc-href" href="#level-3-generate-python-bindings-for-a-qt-c-library" title="Level 3: Generate Python bindings for a Qt C++ library">Level 3: Generate Python bindings for a Qt C++ library</a><ul><li><a class="toc-href" href="#following-the-steps-to-build-the-bindings-in-readme" title="Following the steps to build the bindings in README">Following the steps to build the bindings in README</a></li><li><a class="toc-href" href="#result-congratulations-hello-pyside6-from-c" title="Result: Congratulations Hello PySide6 from C++!">Result: Congratulations Hello PySide6 from C++!</a></li></ul></li></ul></li></ul></div>
+    </div>
+  </details>
+  <div class="max-w-7xl container mx-auto my-8 text-zinc-800 dark:text-zinc-300  
+              prose lg:max-w-none prose-headings:text-zinc-800 prose-headings:dark:text-zinc-300 
+              prose-h1:text-3xl lg:prose-h1:text-3xl prose-headings:font-semibold 
+              prose-pre:bg-zinc-200 prose-pre:text-zinc-800
+              dark:prose-pre:bg-zinc-800 dark:prose-pre:text-zinc-200
+              prose-blockquote:text-zinc-800
+              dark:prose-blockquote:text-zinc-200
+              prose-a:text-gray-500
+              dark:prose-a:text-gray-400
+              dark:prose-strong:text-zinc-200 
+              dark:prose-code:text-zinc-200
+              dark:prose-code:bg-zinc-800
+              prose-code:bg-zinc-200
+              prose-code:font-light
+              prose-img:rounded-md
+              ">
+    <blockquote>
+<p>This blog is a companion piece to my early blog <a href="https://callmenezha.github.io/generates-python-bindings-for-the-qt6-library-with-pyside6-on-macos.html">Generates Python bindings for the Qt6 library with PySide6 on MacOS</a>, but on Windows 11 with several setup changes.</p>
+</blockquote>
+<p>I've been using PyQt5 for years which is de facto standard Qt python binding library until PySide2 has been offically 
+announced up by the Qt Company in year of 2018. Five years on, I think PySide is mature enough to be used in production
+environment. This post request you to have C++ and compiler toolchain knowledge, since I won't explain much about details of CMake syntax and C++ build system.</p>
+<h1 id="walkthrough-examples-on-windows">Walkthrough examples on Windows</h1>
+<h2 id="install-qt-environment">Install Qt environment</h2>
+<p>If you won't modify Qt C++ source, it is recommanded to install Qt pre-build by download qt installer online and install 
+Qt by clicking next till end. Intaller can be download under https://www.qt.io/download-open-source.</p>
+<blockquote>
+<p>CAUTION: You MUST install Qt same version as PySide! Otherwise the abi consistancy is doomed.</p>
+</blockquote>
+<p>The latest Qt version at the time of writing is 6.5.3 , we will stick to this version here.</p>
+<p><img alt="Qt installer" src="./images/qt-installer-win11.png"/></p>
+<p>You can check which version of Qt you have installed on system.
+<img alt="Check Qt Version in QtCreator" src="./images/check-qt-version-win11.png"/></p>
+<p>If you can see Qt installed under <code>C:\Qt\6.5.3</code>, it means you can proceed.</p>
+<h2 id="requirements">Requirements</h2>
+<ul>
+<li>Visual Studio 2019 with C++ tool chains.</li>
+<li>CMake == 3.26.4 (de facto cross-platform C/C++ build system for other build systems)</li>
+<li>Ninja == 1.10.2 (the famous tool <code>make</code>'s modern alternative)</li>
+<li><code>sphinx</code> package for the documentation (optional).</li>
+</ul>
+<p>I am get used to <code>Anaconda</code> environment, its the same of you to use <code>virtualenv</code>.</p>
+<p>Create a new python environment using Python 3.11 (PySide6 only supports Python &gt; 3.8 and it's no difference to use 
+3.9, 3.10, 3.11), I use 3.11 because it is latest Python version at the time of writing.</p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>pyside<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+conda<span class="w"> </span>install<span class="w"> </span>ninja
+conda<span class="w"> </span>install<span class="w"> </span>cmake
+ninja<span class="w"> </span>--version
+cmake<span class="w"> </span>--version
+</code></pre></div>
+<p>If everything works fine and no output complains about missing something then you can proceed.</p>
+<h2 id="option-1-install-pyside6">(Option 1) Install PySide6!</h2>
+<p>There is easy way and hard way to install PySide6 in your python environment.</p>
+<ol>
+<li>Easy way: <code>pip install PySide6</code>. Done!</li>
+<li>Hard way: Man you are brave enough! Lets do this.</li>
+</ol>
+<h2 id="option-2-download-pyside-source-code-and-build-from-source">(Option 2) Download PySide source code and build from source!</h2>
+<h3 id="1-install-visual-studio-2019-64bit-and-c-toolchain-as-needed">1. Install Visual Studio 2019 64bit and C++ toolchain as needed.</h3>
+<blockquote>
+<p>Download Visual Studio 2019 online installer and install it on your computer.</p>
+</blockquote>
+<h4>Add Visual Studio 2019 compiler launcher path to system enviroment variable <code>Path</code>.</h4>
+<blockquote>
+<p>Add "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin" at tail of variable <code>Path</code> in system enviroment for <code>CMake</code> to find proper compiler paths.</p>
+</blockquote>
+<h3 id="2-install-qt-and-dont-forget-install-source-code-as-well">2. Install Qt and don't forget install source code as well.</h3>
+<blockquote>
+<p>Download Qt online installer and install it on your computer, in customize option click <code>source code</code> it will download source code besides binary files.</p>
+</blockquote>
+<h4>Add Qt install path to system environment variable <code>Path</code>.</h4>
+<blockquote>
+<p>Add "C:\Qt\6.5.3\msvc2019_64\bin" at tail of variable <code>Path</code> in system enviroment for <code>CMake</code> to find proper Qt include and library cmake paths.</p>
+</blockquote>
+<h3 id="3-download-and-setup-clang-which-used-for-c-python-binding-generation">3. Download and setup Clang which used for C++ python binding generation.</h3>
+<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://download.qt.io/development_releases/prebuilt/libclang/libclang-release_140-based-macos-universal.7z
+</code></pre></div>
+<blockquote>
+<p>Extract the files, and leave it on any desired path, and set the environment variable required:</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>7z<span class="w"> </span>x<span class="w"> </span>libclang-release_140-based-macos-universal.7z
+<span class="nb">set</span><span class="w"> </span><span class="nv">LLVM_INSTALL_DIR</span><span class="o">=</span><span class="nv">$PWD</span>/libclang
+</code></pre></div>
+<blockquote>
+<p>Or add environment variable named <code>LLVM_INSTALL_DIR</code> and set its value to <code>C:\lib\libclang-release_17.0.1-based-windows-vs2019_64\libclang</code> ('C:\lib\' is the folder where I extracted the compressed 7z file to)</p>
+</blockquote>
+<h3 id="4-setup-conda-environment-for-pyside-compilation">4. Setup conda environment for pyside compilation:</h3>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>pyside<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+</code></pre></div>
+<h4>Install cmake, ninja, numpy</h4>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>install<span class="w"> </span>cmake
+conda<span class="w"> </span>install<span class="w"> </span>ninja
+conda<span class="w"> </span>install<span class="w"> </span>numpy
+</code></pre></div>
+<h3 id="5-cloning-the-official-repository-can-be-done-by">5. Cloning the official repository can be done by:</h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://code.qt.io/pyside/pyside-setup
+</code></pre></div>
+<h4>Checking out the version that we want to build, for example, 6.5.3:</h4>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>pyside-setup<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span><span class="m">6</span>.5.3
+</code></pre></div>
+<h4>Install the general dependencies:</h4>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</code></pre></div>
+<blockquote>
+<p>NOTE: Keep in mind you need to use the same version as your Qt installation</p>
+</blockquote>
+<h3 id="6-building-pyside">6. Building PySide</h3>
+<p>Check your Qt installation path, to specifically use that version of qtpaths to build PySide. for example, <code>C:\Qt\6.5.3\msvc2019_64\bin\qtpaths.exe</code>. (This <code>qtpaths</code> is a small program to get locations of Qt)</p>
+<p>Build can take a few minutes, so it is recommended to use more than one CPU core:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>setup.py<span class="w"> </span>build<span class="w"> </span>--build-tests<span class="w"> </span>--ignore-git<span class="w"> </span>--parallel<span class="o">=</span><span class="m">16</span>
+</code></pre></div>
+<blockquote>
+<p>My PC is equiped with AMD-7950X CPU it has 16-cores so i use <code>--parallel=16</code> here :P</p>
+</blockquote>
+<h3 id="issues-that-i-came-across">ISSUES THAT I came across.</h3>
+<h4>1. UnicodeDecodeError: &lsquo;gbk&lsquo; codec can&lsquo;t decode byte.</h4>
+<div class="highlight"><pre><span></span><code>UnicodeDecodeError:<span class="w"> </span><span class="s1">'gbk'</span><span class="w"> </span>codec<span class="w"> </span>can<span class="s1">'t decode byte 0x82 in position 2202: illegal multibyte sequence</span>
+<span class="s1">Traceback (most recent call last):</span>
+<span class="s1">  File "C:\Users\Admin\Dev\pyside-setup\setup.py", line 42, in &lt;module&gt;</span>
+<span class="s1">    setup_runner.run_setup()</span>
+<span class="s1">  File "C:\Users\Admin\Dev\pyside-setup\build_scripts\setup_runner.py", line 207, in run_setup</span>
+<span class="s1">    self.run_setuptools_setup()</span>
+<span class="s1">  ...</span>
+<span class="s1">  ...</span>
+<span class="s1">  ...</span>
+<span class="s1">    qt_target_mkspec_output = configure_cmake_project(</span>
+<span class="s1">                              ^^^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="s1">  File "C:\Users\Admin\Dev\pyside-setup\build_scripts\utils.py", line 1091, in configure_cmake_project</span>
+<span class="s1">    m = _configure_failure_message(project_path, cmd, return_code,</span>
+<span class="s1">        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+<span class="s1">  File "C:\Users\Admin\Dev\pyside-setup\build_scripts\utils.py", line 1024, in _configure_failure_message</span>
+<span class="s1">    error_text = indent(error.strip(), "    ")</span>
+<span class="s1">                        ^^^^^^^^^^^</span>
+<span class="s1">AttributeError: '</span>NoneType<span class="s1">' object has no attribute '</span>strip<span class="err">'</span>
+Traceback<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>last<span class="o">)</span>:
+<span class="w">  </span>File<span class="w"> </span><span class="s2">"C:\Users\Admin\Dev\pyside-setup\setup.py"</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">42</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>&lt;module&gt;
+<span class="w">    </span>setup_runner.run_setup<span class="o">()</span>
+<span class="w">  </span>File<span class="w"> </span><span class="s2">"C:\Users\Admin\Dev\pyside-setup\build_scripts\setup_runner.py"</span>,<span class="w"> </span>line<span class="w"> </span><span class="m">263</span>,<span class="w"> </span><span class="k">in</span><span class="w"> </span>run_setup
+<span class="w">    </span>raise<span class="w"> </span>RuntimeError<span class="o">(</span>msg<span class="o">)</span>
+RuntimeError:
+setup.py<span class="w"> </span>invocation<span class="w"> </span>failed<span class="w"> </span>with<span class="w"> </span><span class="nb">exit</span><span class="w"> </span>code:<span class="w"> </span><span class="m">1</span>.
+</code></pre></div>
+<p>Because I use Chinese Simplified language on my computer, this is an known issue. You can just fix it by explicit creating the <code>Popen</code> with encoding as 'utf-8' or change <code>Popen</code> default init method n <code>subprocess.py</code>.</p>
+<h3 id="tips-of-pakcage-installation">Tips of pakcage installation.</h3>
+<p>After you have built PySide2 project successfully, you will get Official PySide6 package under <code>qfp-py3.11-qt6.5.3-64bit-release</code> 
+folder in <code>build</code> we create early. There is a lot of <code>Qt*.dll</code> in <code>package/PySide6</code> that ready to be imported by your 
+python script.</p>
+<p>But before we use PySide6 in our python script, we must first install them into our <code>site-packages</code> for python 
+executable to find. </p>
+<blockquote>
+<p>You can use <code>python setup.py --help</code> to see the usage of commandline of setup tool.
+Or use <code>python setup.py --help-command</code> to see detailed argument usage.</p>
+</blockquote>
+<p>The setup commandline tool is powerful, it can generate egg files, wheels and dist-info folder for package distribution. 
+But here we just use <code>python setup.py install --build-tests --ignore-git --parallel=16</code> to install package with dist-info(stores meta information of package for usage).</p>
+<h2 id="test-pyside6-installation_1">Test PySide6 installation</h2>
+<p>You can execute one of the examples to verify the process is properly working. Remember to properly set the environment variables for Qt and PySide:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>examples<span class="se">\w</span>idgets<span class="se">\w</span>idgets<span class="se">\t</span>etrix<span class="se">\t</span>etrix.py
+</code></pre></div>
+<p><img alt="Tetrix demo on win11" src="./images/pyside-tetrix-demo-win11.png"/></p>
+<h2 id="write-c-generate-python-bindings-for-usage">Write C++ generate Python bindings for usage.</h2>
+<h3 id="level-1-generate-python-bindings-for-a-non-qt-c-library">Level 1: Generate Python bindings for a non-Qt C++ library</h3>
+<blockquote>
+<p>https://doc.qt.io/qtforpython-6/examples/example_samplebinding_samplebinding.html</p>
+</blockquote>
+<p>There is a demo of non-Qt C++ library Python binding generation called <code>samplebinding</code> located at <code>PySide/examples/samplebinding</code>. </p>
+<p>You can practice this demo by reading the documentation under the folder <code>samplebinding/doc/samplebinding.rst</code>.</p>
+<p>If you walkthrough the hard trip and built PySide6 your self, your toolchain environment is well 
+configured to work properly on this demo. But if you install PySide6 using PIP, then you will need to install 
+<code>shiboken6-generator</code> which can't be install throgh PIP and isn't included in the <code>PySide6</code> PIP installation. 
+<code>shiboken6-generator</code> package wheel can be manually downloaded from website https://download.qt.io/official_releases/QtForPython/shiboken6-generator/ . Using <code>pip install shiboken6_generator-6.5.3-cp37-abi3-win_amd64.whl</code> 
+to install.</p>
+<blockquote>
+<p>If you build PySide6 from sources, besides <code>PySide6</code>, <code>shiboken6</code> and <code>shiboken6-generator</code> will also be compiled and 
+installed from source.</p>
+</blockquote>
+<h2 id="level-2-make-a-qt-c-application-scriptable_1">Level 2: Make a Qt C++ application scriptable</h2>
+<blockquote>
+<p>https://doc.qt.io/qtforpython-6/examples/example_scriptableapplication_scriptableapplication.html</p>
+</blockquote>
+<p>This example demonstrates how to make a Qt C++ application scriptable.
+The exmaple document is really detailed, so you can walkthrough it easily.
+In the end you will get a <code>scriptableapplication</code> which can be runned as an executable program.</p>
+<p>This example is exactly the opposite of example "Level 1: Generate Python bindings for a non-Qt C++ library".</p>
+<p>In previous example, we compile C++ into dynamic shared library together with loadable module and use C++ objects in 
+Python runtime environment. But in this example, the direction is the opposite, it compiles C++ application and link 
+against python library, embed python runtime context in it, so the Qt application actually invokes Python script.</p>
+<h2 id="level-3-generate-python-bindings-for-a-qt-c-library">Level 3: Generate Python bindings for a Qt C++ library</h2>
+<p>Amazingly, we've gotten this far, and it's time to treat ourselves a little bit with a cup of coffee.</p>
+<blockquote>
+<p>This URL https://doc.qt.io/qt-6/qtwidgets-widgets-wiggly-example.html given in README is 404 not found now. 
+So lets explore it on our own.</p>
+</blockquote>
+<p>According to README of this example, it shows how to interact with a custom widget from two
+different ways:</p>
+<ul>
+<li>A full Python translation from a C++ example,</li>
+<li>A Python binding generated from the C++ file.</li>
+</ul>
+<p>We only focus on the second in this post.</p>
+<h3 id="following-the-steps-to-build-the-bindings-in-readme">Following the steps to build the bindings in README</h3>
+<blockquote>
+<p>The most important files are:
+* <code>bindings.xml</code>, to specify the class that we want to expose from C++
+  to Python,
+* <code>bindings.h</code> to include the header of the classes we want to expose
+* <code>CMakeList.txt</code>, with all the instructions to build the shared libraries
+  (DLL, or dylib)
+* <code>pyside_config.py</code> which is located in the utils directory, one level
+  up, to get the path for Shiboken and PySide.</p>
+<p>Now create a <code>build/</code> directory, and from inside run <code>cmake</code> to use
+the provided <code>CMakeLists.txt</code>:</p>
+<p>macOS/Linux:
+<code>bash
+cd ~/pyside-setup/examples/widgetbinding</code></p>
+<p>On Windows:</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>C:<span class="se">\p</span>yside-setup<span class="se">\e</span>xamples<span class="se">\w</span>idgetbinding
+mkdir<span class="w"> </span>build
+cmake<span class="w"> </span>-H..<span class="w"> </span>-B.<span class="w"> </span>-G<span class="w"> </span><span class="s2">"Visual Studio 16 2019"</span><span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DCMAKE_OSX_ARCHITECTURES<span class="o">=</span>x86_64
+msbuild<span class="w"> </span>wiggly.sln<span class="w"> </span>/property:Configuration<span class="o">=</span>Release
+<span class="nb">cd</span><span class="w"> </span>..
+copy<span class="w"> </span>build<span class="se">\R</span>elease<span class="se">\w</span>iggly.pyd<span class="w">  </span>.<span class="w"> </span>/Y
+copy<span class="w"> </span>build<span class="se">\R</span>elease<span class="se">\l</span>ibwiggly.dll<span class="w">  </span>.<span class="w"> </span>/Y
+python<span class="w"> </span>main.py
+</code></pre></div>
+<h3 id="result-congratulations-hello-pyside6-from-c">Result: Congratulations Hello PySide6 from C++!</h3>
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-H..<span class="w"> </span>-B.<span class="w"> </span>-G<span class="w"> </span><span class="s2">"Visual Studio 16 2019"</span><span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DCMAKE_OSX_ARCHITECTURES<span class="o">=</span>x86_64
+msbuild<span class="w"> </span>wiggly.sln<span class="w"> </span>/property:Configuration<span class="o">=</span>Release
+<span class="nb">cd</span><span class="w"> </span>..
+copy<span class="w"> </span>build<span class="se">\R</span>elease<span class="se">\w</span>iggly.pyd<span class="w">  </span>.<span class="w"> </span>/Y
+copy<span class="w"> </span>build<span class="se">\R</span>elease<span class="se">\l</span>ibwiggly.dll<span class="w">  </span>.<span class="w"> </span>/Y
+python<span class="w"> </span>main.py
+</code></pre></div>
+<p><img alt="Wiggly Screenshot" src="./images/wiggly-snapshot-win11.png"/></p>
+    <!-- <div class="aspect-w-16 aspect-h-9 mx-auto"></div> CSS placeholder -->
+  </div>
+  <footer class="flex flex-col mt-10 ">
+    <ul class="flex flex-wrap">
+      <a href="https://callmenezha.github.io/tag/pyside6.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          PySide6
+        </li>
+      </a>
+      <a href="https://callmenezha.github.io/tag/python.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          Python
+        </li>
+      </a>
+      <a href="https://callmenezha.github.io/tag/qt.html">
+        <li
+          class="bg-zinc-200 hover:bg-zinc-300 dark:hover:bg-zinc-800 dark:bg-zinc-700 text-zinc-500 dark:text-neutral-400 mb-2 mr-2 px-3 py-1.5 rounded-md transition ease-in active:-translate-y-1 active:scale-110 duration-75">
+          Qt
+        </li>
+      </a>
+    </ul>
+    <div class="flex w-full my-2 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+      <div class="w-1/2 rounded-l-lg"></div>
+      <div class="w-1/2 hover:bg-zinc-300 dark:hover:bg-zinc-800 rounded-r-lg ">
+        <a class="flex flex-col" href="https://callmenezha.github.io/qt-qshortcut-ambiguity.html">
+          <div class="text-right mx-4 py-2">
+            <p class="text-zinc-500 dark:text-neutral-400 text-sm">NEXT PAGE »</p>
+            <p class="text-right py-1 hover:underline">Qt QShortcut Ambiguity</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="flex bg-zinc-200 dark:bg-zinc-700 py-2 rounded-lg justify-center space-x-2 text-xs">
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="twitter" aria-label="share Features on twitter"
+          href="https://twitter.com/intent/tweet/?text=Features&amp;url=https://callmenezha.github.io/generates-python-bindings-for-the-qt6-library-with-pyside6-on-windows-11.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-twitter fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="linkedin" aria-label="share Features on linkedin"
+          href="https://www.linkedin.com/sharing/share-offsite/?url=https://callmenezha.github.io/generates-python-bindings-for-the-qt6-library-with-pyside6-on-windows-11.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="reddit" aria-label="share Features on reddit"
+          href="https://reddit.com/submit?url=https://callmenezha.github.io/generates-python-bindings-for-the-qt6-library-with-pyside6-on-windows-11.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-reddit fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="facebook" aria-label="share Features on facebook"
+          href="https://facebook.com/sharer/sharer.php?u=https://callmenezha.github.io/generates-python-bindings-for-the-qt6-library-with-pyside6-on-windows-11.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-facebook fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="whatsapp" aria-label="share Features on whatsapp"
+          href="https://api.whatsapp.com/send?text=Features - https://callmenezha.github.io/generates-python-bindings-for-the-qt6-library-with-pyside6-on-windows-11.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+      <ul>
+        <a target="_blank" rel="noopener noreferrer" title="telegram" aria-label="share Features on telegram"
+          href="https://telegram.me/share/url?text=Features&amp;url=https://callmenezha.github.io/generates-python-bindings-for-the-qt6-library-with-pyside6-on-windows-11.html">
+          <li class="bg-gray-900 p-1 text-white rounded-md">
+            <i class="fab fa-telegram fa-2x" aria-hidden="true"></i>
+          </li>
+        </a>
+      </ul>
+    </div>
+  </footer>
+  <div>
+  </div>
+</main>
+
+    </div>
+    <footer class="flex w-full text-xs justify-center mt-10 mb-6 text-zinc-500 dark:text-zinc-400">
+        <div class="px-4">
+            <span>©2023&nbsp;&#8226;&nbsp;</span>ZiJian Jiang (Github@CallmeNeZha)
+        </div>
+    </footer>
+
+
+    <script>
+        let themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        let themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia(
+                '(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+        let themeToggleBtn = document.getElementById('theme-toggle');
+        themeToggleBtn.addEventListener('click', function () {
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+    <!--  -->
+</body>
+
+</html>
