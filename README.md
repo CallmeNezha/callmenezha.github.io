@@ -20,4 +20,4 @@ from others.
 4. `git commit -m"new post"`
 5. `git push`
 
-![gameboy](./images/embeded_man.png)
+![gameboy](https://github.com/CallmeNezha/callmenezha.github.io/blob/main/content/images/embeded_man.png)
