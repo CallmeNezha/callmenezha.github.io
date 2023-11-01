@@ -94,7 +94,7 @@
       <div class="flex text-xs text-zinc-800 dark:text-zinc-400">
         <time>七月 29, 2023</time>
         <div>
-          <span>&nbsp;·&nbsp;15 min read</span>
+          <span>&nbsp;·&nbsp;14 min read</span>
         </div>
         <div>
           <span>&nbsp;·&nbsp;Zijian Jiang</span>
@@ -151,11 +151,10 @@ Qt by clicking next till end. Intaller can be download under https://www.qt.io/d
 <p>I am get used to <code>Anaconda</code> environment, its the same of you to use <code>virtualenv</code>.</p>
 <p>Create a new python environment using Python 3.11 (PySide6 only supports Python &gt; 3.8 and it's no difference to use 
 3.9, 3.10, 3.11), I use 3.11 because it is latest Python version at the time of writing.</p>
-<blockquote>
-<p><code>conda create --name pyside python=3.11</code>
-<code>ninja --version</code>
-<code>cmake --version</code></p>
-</blockquote>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>create<span class="w"> </span>--name<span class="w"> </span>pyside<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+ninja<span class="w"> </span>--version
+cmake<span class="w"> </span>--version
+</code></pre></div>
 <p>If everything works fine and no output complains about missing something then you can proceed.</p>
 <h2 id="install-pyside6">Install PySide6!</h2>
 <p>There is easy way and hard way to install PySide6 in your python environment.</p>
@@ -165,37 +164,37 @@ Qt by clicking next till end. Intaller can be download under https://www.qt.io/d
 </ol>
 <h3 id="download-pyside-source-code-hard-trip">Download PySide source code! (Hard trip)</h3>
 <h4>Cloning the official repository can be done by:</h4>
-<blockquote>
-<p><code>git clone https://code.qt.io/pyside/pyside-setup</code></p>
-</blockquote>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://code.qt.io/pyside/pyside-setup
+</code></pre></div>
 <h4>Checking out the version that we want to build, for example, 6.5.2:</h4>
-<blockquote>
-<p><code>cd pyside-setup &amp;&amp; git checkout 6.5.2</code></p>
-</blockquote>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>pyside-setup<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>checkout<span class="w"> </span><span class="m">6</span>.5.2
+</code></pre></div>
 <h4>Install the general dependencies:</h4>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</code></pre></div>
 <blockquote>
-<p><code>pip install -r requirements.txt</code></p>
 <p>NOTE: Keep in mind you need to use the same version as your Qt installation</p>
 </blockquote>
 <h4>Building PySide</h4>
 <p>Check your Qt installation path, to specifically use that version of qtpaths to build PySide. for example, <code>/User/XX/Qt/6.5.2/macos/bin/qtpaths</code>. (This <code>qtpaths</code> is a small program to get locations of Qt)</p>
 <p>Build can take a few minutes, so it is recommended to use more than one CPU core:</p>
-<p><code>python setup.py build --qtpaths=/User/XX/Qt/6.5.2/macos/bin/qtpaths/qtpaths --build-tests --ignore-git --parallel=8</code></p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>setup.py<span class="w"> </span>build<span class="w"> </span>--qtpaths<span class="o">=</span>/User/XX/Qt/6.5.2/macos/bin/qtpaths/qtpaths<span class="w"> </span>--build-tests<span class="w"> </span>--ignore-git<span class="w"> </span>--parallel<span class="o">=</span><span class="m">8</span>
+</code></pre></div>
 <h4>EWWWWW... ISSUE MET! (Hard trip)</h4>
-<div class="highlight"><pre><span></span><code><span class="nv">CMake</span><span class="w"> </span><span class="nv">Error</span><span class="w"> </span><span class="nv">at</span><span class="w"> </span><span class="nv">cmake</span><span class="o">/</span><span class="nv">ShibokenHelpers</span>.<span class="nv">cmake</span>:<span class="mi">170</span><span class="w"> </span><span class="ss">(</span><span class="nv">find_package</span><span class="ss">)</span>:
-<span class="w">  </span><span class="nv">Could</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">find</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">package</span><span class="w"> </span><span class="nv">configuration</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="nv">provided</span><span class="w"> </span><span class="nv">by</span><span class="w"> </span><span class="s2">"Clang"</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">any</span><span class="w"> </span><span class="nv">of</span>
-<span class="w">  </span><span class="nv">the</span><span class="w"> </span><span class="nv">following</span><span class="w"> </span><span class="nv">names</span>:
+<div class="highlight"><pre><span></span><code>CMake<span class="w"> </span>Error<span class="w"> </span>at<span class="w"> </span>cmake/ShibokenHelpers.cmake:170<span class="w"> </span><span class="o">(</span>find_package<span class="o">)</span>:
+<span class="w">  </span>Could<span class="w"> </span>not<span class="w"> </span>find<span class="w"> </span>a<span class="w"> </span>package<span class="w"> </span>configuration<span class="w"> </span>file<span class="w"> </span>provided<span class="w"> </span>by<span class="w"> </span><span class="s2">"Clang"</span><span class="w"> </span>with<span class="w"> </span>any<span class="w"> </span>of
+<span class="w">  </span>the<span class="w"> </span>following<span class="w"> </span>names:
 
-<span class="w">    </span><span class="nv">ClangConfig</span>.<span class="nv">cmake</span>
-<span class="w">    </span><span class="nv">clang</span><span class="o">-</span><span class="nv">config</span>.<span class="nv">cmake</span>
+<span class="w">    </span>ClangConfig.cmake
+<span class="w">    </span>clang-config.cmake
 
-<span class="w">  </span><span class="nv">Add</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">installation</span><span class="w"> </span><span class="nv">prefix</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="s2">"Clang"</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">set</span>
-<span class="w">  </span><span class="s2">"Clang_DIR"</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">directory</span><span class="w"> </span><span class="nv">containing</span><span class="w"> </span><span class="nv">one</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">above</span><span class="w"> </span><span class="nv">files</span>.<span class="w">  </span><span class="k">If</span><span class="w"> </span><span class="s2">"Clang"</span>
-<span class="w">  </span><span class="nv">provides</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">separate</span><span class="w"> </span><span class="nv">development</span><span class="w"> </span><span class="nv">package</span><span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">SDK</span>,<span class="w"> </span><span class="nv">be</span><span class="w"> </span><span class="nv">sure</span><span class="w"> </span><span class="nv">it</span><span class="w"> </span><span class="nv">has</span><span class="w"> </span><span class="nv">been</span>
-<span class="w">  </span><span class="nv">installed</span>.
-<span class="k">Call</span><span class="w"> </span><span class="nl">Stack</span><span class="w"> </span><span class="ss">(</span><span class="nv">most</span><span class="w"> </span><span class="nv">recent</span><span class="w"> </span><span class="k">call</span><span class="w"> </span><span class="nl">first</span><span class="ss">)</span>:
-<span class="w">  </span><span class="nv">cmake</span><span class="o">/</span><span class="nv">ShibokenSetup</span>.<span class="nv">cmake</span>:<span class="mi">38</span><span class="w"> </span><span class="ss">(</span><span class="nv">setup_clang</span><span class="ss">)</span>
-<span class="w">  </span><span class="nv">CMakeLists</span>.<span class="nv">txt</span>:<span class="mi">14</span><span class="w"> </span><span class="ss">(</span><span class="k">include</span><span class="ss">)</span>
+<span class="w">  </span>Add<span class="w"> </span>the<span class="w"> </span>installation<span class="w"> </span>prefix<span class="w"> </span>of<span class="w"> </span><span class="s2">"Clang"</span><span class="w"> </span>to<span class="w"> </span>CMAKE_PREFIX_PATH<span class="w"> </span>or<span class="w"> </span><span class="nb">set</span>
+<span class="w">  </span><span class="s2">"Clang_DIR"</span><span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>directory<span class="w"> </span>containing<span class="w"> </span>one<span class="w"> </span>of<span class="w"> </span>the<span class="w"> </span>above<span class="w"> </span>files.<span class="w">  </span>If<span class="w"> </span><span class="s2">"Clang"</span>
+<span class="w">  </span>provides<span class="w"> </span>a<span class="w"> </span>separate<span class="w"> </span>development<span class="w"> </span>package<span class="w"> </span>or<span class="w"> </span>SDK,<span class="w"> </span>be<span class="w"> </span>sure<span class="w"> </span>it<span class="w"> </span>has<span class="w"> </span>been
+<span class="w">  </span>installed.
+Call<span class="w"> </span>Stack<span class="w"> </span><span class="o">(</span>most<span class="w"> </span>recent<span class="w"> </span>call<span class="w"> </span>first<span class="o">)</span>:
+<span class="w">  </span>cmake/ShibokenSetup.cmake:38<span class="w"> </span><span class="o">(</span>setup_clang<span class="o">)</span>
+<span class="w">  </span>CMakeLists.txt:14<span class="w"> </span><span class="o">(</span>include<span class="o">)</span>
 </code></pre></div>
 <p>Since I have <code>CommandLineTools</code> installed instead of XCode.app, the CMake can not find my <code>Clang</code> correctly. (Clang is used for static CPP source file 
 parse for syntax extraction used in binding source file generation).</p>
@@ -203,30 +202,30 @@ parse for syntax extraction used in binding source file generation).</p>
 /Library/Developer/CommandLineTools/usr/lib/libclang.dylib
 </code></pre></div>
 <p>I digged into CMake files and found this in <code>ShibokenHelper.cmake</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="n">macro</span><span class="p">(</span><span class="n">setup_clang</span><span class="p">)</span>
-<span class="w">    </span><span class="c1"># Find libclang using the environment variables LLVM_INSTALL_DIR,</span>
-<span class="w">    </span><span class="c1"># CLANG_INSTALL_DIR using standard cmake.</span>
-<span class="w">    </span><span class="c1"># Use CLANG_INCLUDE_DIRS and link to libclang.</span>
-<span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">DEFINED</span><span class="w"> </span><span class="n">ENV</span><span class="p">{</span><span class="n">LLVM_INSTALL_DIR</span><span class="p">})</span>
-<span class="w">        </span><span class="n">list</span><span class="p">(</span><span class="n">PREPEND</span><span class="w"> </span><span class="n">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s2">"$ENV{LLVM_INSTALL_DIR}"</span><span class="p">)</span>
-<span class="w">        </span><span class="n">list</span><span class="p">(</span><span class="n">PREPEND</span><span class="w"> </span><span class="n">CMAKE_FIND_ROOT_PATH</span><span class="w"> </span><span class="s2">"$ENV{LLVM_INSTALL_DIR}"</span><span class="p">)</span>
-<span class="w">    </span><span class="n">elseif</span><span class="p">(</span><span class="n">DEFINED</span><span class="w"> </span><span class="n">ENV</span><span class="p">{</span><span class="n">CLANG_INSTALL_DIR</span><span class="p">})</span>
-<span class="w">        </span><span class="n">list</span><span class="p">(</span><span class="n">PREPEND</span><span class="w"> </span><span class="n">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s2">"$ENV{CLANG_INSTALL_DIR}"</span><span class="p">)</span>
-<span class="w">        </span><span class="n">list</span><span class="p">(</span><span class="n">PREPEND</span><span class="w"> </span><span class="n">CMAKE_FIND_ROOT_PATH</span><span class="w"> </span><span class="s2">"$ENV{CLANG_INSTALL_DIR}"</span><span class="p">)</span>
-<span class="w">    </span><span class="n">endif</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="nb">macro</span><span class="p">(</span><span class="s">setup_clang</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Find libclang using the environment variables LLVM_INSTALL_DIR,</span>
+<span class="w">    </span><span class="c"># CLANG_INSTALL_DIR using standard cmake.</span>
+<span class="w">    </span><span class="c"># Use CLANG_INCLUDE_DIRS and link to libclang.</span>
+<span class="w">    </span><span class="nb">if</span><span class="p">(</span><span class="s">DEFINED</span><span class="w"> </span><span class="s">ENV{LLVM_INSTALL_DIR}</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">list</span><span class="p">(</span><span class="s">PREPEND</span><span class="w"> </span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s2">"$ENV{LLVM_INSTALL_DIR}"</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">list</span><span class="p">(</span><span class="s">PREPEND</span><span class="w"> </span><span class="s">CMAKE_FIND_ROOT_PATH</span><span class="w"> </span><span class="s2">"$ENV{LLVM_INSTALL_DIR}"</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">elseif</span><span class="p">(</span><span class="s">DEFINED</span><span class="w"> </span><span class="s">ENV{CLANG_INSTALL_DIR}</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">list</span><span class="p">(</span><span class="s">PREPEND</span><span class="w"> </span><span class="s">CMAKE_PREFIX_PATH</span><span class="w"> </span><span class="s2">"$ENV{CLANG_INSTALL_DIR}"</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">list</span><span class="p">(</span><span class="s">PREPEND</span><span class="w"> </span><span class="s">CMAKE_FIND_ROOT_PATH</span><span class="w"> </span><span class="s2">"$ENV{CLANG_INSTALL_DIR}"</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">endif</span><span class="p">()</span>
 
-<span class="w">    </span><span class="n">find_package</span><span class="p">(</span><span class="n">Clang</span><span class="w"> </span><span class="n">CONFIG</span><span class="w"> </span><span class="n">REQUIRED</span><span class="p">)</span>
-<span class="w">    </span><span class="c1"># Need to explicitly handle the version check, because the Clang package doesn't.</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">LLVM_PACKAGE_VERSION</span><span class="w"> </span><span class="n">AND</span><span class="w"> </span><span class="n">LLVM_PACKAGE_VERSION</span><span class="w"> </span><span class="n">VERSION_LESS</span><span class="w"> </span><span class="s2">"9.0"</span><span class="p">)</span>
-<span class="w">        </span><span class="n">message</span><span class="p">(</span><span class="n">FATAL_ERROR</span><span class="w"> </span><span class="s2">"You need LLVM version 9.0 or greater to build."</span><span class="p">)</span>
-<span class="w">    </span><span class="n">endif</span><span class="p">()</span>
+<span class="w">    </span><span class="nb">find_package</span><span class="p">(</span><span class="s">Clang</span><span class="w"> </span><span class="s">CONFIG</span><span class="w"> </span><span class="s">REQUIRED</span><span class="p">)</span>
+<span class="w">    </span><span class="c"># Need to explicitly handle the version check, because the Clang package doesn't.</span>
+<span class="w">    </span><span class="nb">if</span><span class="w"> </span><span class="p">(</span><span class="s">LLVM_PACKAGE_VERSION</span><span class="w"> </span><span class="s">AND</span><span class="w"> </span><span class="s">LLVM_PACKAGE_VERSION</span><span class="w"> </span><span class="s">VERSION_LESS</span><span class="w"> </span><span class="s2">"9.0"</span><span class="p">)</span>
+<span class="w">        </span><span class="nb">message</span><span class="p">(</span><span class="s">FATAL_ERROR</span><span class="w"> </span><span class="s2">"You need LLVM version 9.0 or greater to build."</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">endif</span><span class="p">()</span>
 
-<span class="w">    </span><span class="c1"># CLANG_LIBRARY is read out from the cmake cache to deploy libclang</span>
-<span class="w">    </span><span class="n">get_target_property</span><span class="p">(</span><span class="n">CLANG_BUILD_TYPE</span><span class="w"> </span><span class="n">libclang</span><span class="w"> </span><span class="n">IMPORTED_CONFIGURATIONS</span><span class="p">)</span>
-<span class="w">    </span><span class="n">get_target_property</span><span class="p">(</span><span class="n">CLANG_LIBRARY_NAME</span><span class="w"> </span><span class="n">libclang</span><span class="w"> </span><span class="n">IMPORTED_LOCATION_</span><span class="o">$</span><span class="p">{</span><span class="n">CLANG_BUILD_TYPE</span><span class="p">})</span>
-<span class="w">    </span><span class="n">set</span><span class="p">(</span><span class="n">CLANG_LIBRARY</span><span class="w"> </span><span class="s2">"${CLANG_LIBRARY_NAME}"</span><span class="w"> </span><span class="n">CACHE</span><span class="w"> </span><span class="n">FILEPATH</span><span class="w"> </span><span class="s2">"libclang"</span><span class="p">)</span>
-<span class="w">    </span><span class="n">message</span><span class="p">(</span><span class="n">STATUS</span><span class="w"> </span><span class="s2">"CLANG: ${Clang_DIR}, ${CLANG_LIBRARY} detected"</span><span class="p">)</span>
-<span class="n">endmacro</span><span class="p">()</span>
+<span class="w">    </span><span class="c"># CLANG_LIBRARY is read out from the cmake cache to deploy libclang</span>
+<span class="w">    </span><span class="nb">get_target_property</span><span class="p">(</span><span class="s">CLANG_BUILD_TYPE</span><span class="w"> </span><span class="s">libclang</span><span class="w"> </span><span class="s">IMPORTED_CONFIGURATIONS</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">get_target_property</span><span class="p">(</span><span class="s">CLANG_LIBRARY_NAME</span><span class="w"> </span><span class="s">libclang</span><span class="w"> </span><span class="s">IMPORTED_LOCATION_</span><span class="o">${</span><span class="nv">CLANG_BUILD_TYPE</span><span class="o">}</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">set</span><span class="p">(</span><span class="s">CLANG_LIBRARY</span><span class="w"> </span><span class="s2">"${CLANG_LIBRARY_NAME}"</span><span class="w"> </span><span class="s">CACHE</span><span class="w"> </span><span class="s">FILEPATH</span><span class="w"> </span><span class="s2">"libclang"</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">message</span><span class="p">(</span><span class="s">STATUS</span><span class="w"> </span><span class="s2">"CLANG: ${Clang_DIR}, ${CLANG_LIBRARY} detected"</span><span class="p">)</span>
+<span class="nb">endmacro</span><span class="p">()</span>
 </code></pre></div>
 <p>Which says <code>LLVM_INSTALL_DIR</code> path is used to find <code>libclang</code>, I set the environment variable, but still can't build it correctly, obviously, <code>find_package(Clang CONFIG REQUIRED)</code> needs CMake configuration file to work, so any Clang library 
 without CMake configuration files can not be used.</p>
@@ -234,11 +233,15 @@ without CMake configuration files can not be used.</p>
 <blockquote>
 <p>Setting up CLANG
 If you don&rsquo;t have libclang already in your system, you can download from the Qt servers:</p>
-<p><code>wget https://download.qt.io/development_releases/prebuilt/libclang/libclang-release_140-based-macos-universal.7z</code>
-Extract the files, and leave it on any desired path, and set the environment variable required:</p>
-<p><code>7z x libclang-release_140-based-macos-universal.7z</code>
-<code>export LLVM_INSTALL_DIR=$PWD/libclang</code></p>
 </blockquote>
+<div class="highlight"><pre><span></span><code>wget<span class="w"> </span>https://download.qt.io/development_releases/prebuilt/libclang/libclang-release_140-based-macos-universal.7z
+</code></pre></div>
+<blockquote>
+<p>Extract the files, and leave it on any desired path, and set the environment variable required:</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>7z<span class="w"> </span>x<span class="w"> </span>libclang-release_140-based-macos-universal.7z
+<span class="nb">export</span><span class="w"> </span><span class="nv">LLVM_INSTALL_DIR</span><span class="o">=</span><span class="nv">$PWD</span>/libclang
+</code></pre></div>
 <p>And it worked as expected. </p>
 <h3 id="tips-of-pakcage-installation">Tips of pakcage installation.</h3>
 <p>After you have built PySide2 project successfully, you will get Official PySide6 package under <code>qfp-py3.11-qt6.5.2-64bit-release</code> 
@@ -254,9 +257,8 @@ Or use <code>python setup.py --help-command</code> to see detailed argument usag
 But here we just use <code>python setup.py install --qtpaths=/User/XX/Qt/6.5.2/macos/bin/qtpaths/qtpaths --build-tests --ignore-git --parallel=8</code> to install package with dist-info(stores meta information of package for usage).</p>
 <h3 id="test-installation">Test installation</h3>
 <p>You can execute one of the examples to verify the process is properly working. Remember to properly set the environment variables for Qt and PySide:</p>
-<blockquote>
-<p><code>python examples/widgets/widgets/tetrix/tetrix.py</code></p>
-</blockquote>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>examples/widgets/widgets/tetrix/tetrix.py
+</code></pre></div>
 <h2 id="write-c-generate-python-bindings-for-usage_1">Write C++ generate Python bindings for usage.</h2>
 <h3 id="level-1-generate-python-bindings-for-a-non-qt-c-library">Level 1: Generate Python bindings for a non-Qt C++ library</h3>
 <blockquote>
@@ -284,13 +286,13 @@ Is there reverse compiler we can use?
 The answer is YOU DONT NEED IT, the toolchain we have just installed can compile <code>x86</code> program since engineers in Apple 
 work so hard to make every "Intel" based program running on M1 chip without rewrite code.</p>
 <p>But still we need to set a CMake variable to instruct CMake generate project to compile to <code>x86_64</code>. </p>
-<div class="highlight"><pre><span></span><code>cd examples/samplebinding
-mkdir build
-cd build
-cmake -H.. -B. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=x86_64
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>examples/samplebinding
+mkdir<span class="w"> </span>build
+<span class="nb">cd</span><span class="w"> </span>build
+cmake<span class="w"> </span>-H..<span class="w"> </span>-B.<span class="w"> </span>-G<span class="w"> </span>Ninja<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DCMAKE_OSX_ARCHITECTURES<span class="o">=</span>x86_64
 ninja
-ninja install
-cd ..
+ninja<span class="w"> </span>install
+<span class="nb">cd</span><span class="w"> </span>..
 </code></pre></div>
 <p>The CMake variable <code>CMAKE_OSX_ARCHITECTURES</code> specific architectures for macOS.</p>
 <h2 id="level-2-make-a-qt-c-application-scriptable_1">Level 2: Make a Qt C++ application scriptable</h2>
@@ -349,16 +351,16 @@ This is weird since we have just built <code>scriptableapplication</code> which 
 <code>CMakeLists.txt</code> files.</p>
 <p>I found the error is somehow came from the specific QtCore include paths which are passed to shiboken. 
 The code in <code>widgetbinding</code> example was not right.</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;</span><span class="w"> </span><span class="n">CMakeLists</span><span class="p">.</span><span class="n">txt</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n n-Quoted">`widgetbinding`</span><span class="w"> </span><span class="n">example</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">141</span><span class="o">~</span><span class="mi">148</span>
+<div class="highlight"><pre><span></span><code><span class="err">&gt;</span><span class="w"> </span><span class="err">CMakeLists.txt</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">`widgetbinding`</span><span class="w"> </span><span class="err">example,</span><span class="w"> </span><span class="err">line</span><span class="w"> </span><span class="err">141~148</span>
 
-<span class="err">[</span><span class="mi">141</span><span class="err">]</span><span class="o">:</span><span class="w"> </span><span class="c1"># On macOS, check if Qt is a framework build. This affects how include paths should be handled.</span>
-<span class="err">[</span><span class="mi">142</span><span class="err">]</span><span class="o">:</span><span class="w"> </span><span class="n">get_target_property</span><span class="p">(</span><span class="n">QtCore_is_framework</span><span class="w"> </span><span class="n">Qt6</span><span class="o">::</span><span class="n">Core</span><span class="w"> </span><span class="n">FRAMEWORK</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">143</span><span class="err">]</span><span class="o">:</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">QtCore_is_framework</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">144</span><span class="err">]</span><span class="o">:</span><span class="w">     </span><span class="n">get_target_property</span><span class="p">(</span><span class="n">qt_core_library_location</span><span class="w"> </span><span class="n">Qt6</span><span class="o">::</span><span class="n">Core</span><span class="w"> </span><span class="n">LOCATION</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">145</span><span class="err">]</span><span class="o">:</span><span class="w">     </span><span class="n">get_filename_component</span><span class="p">(</span><span class="n">qt_core_library_location_dir</span><span class="w"> </span><span class="s2">"${qt_core_library_location}"</span><span class="w"> </span><span class="k">DIRECTORY</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">146</span><span class="err">]</span><span class="o">:</span><span class="w">     </span><span class="n">get_filename_component</span><span class="p">(</span><span class="n">lib_dir</span><span class="w"> </span><span class="s2">"${qt_core_library_location_dir}/../"</span><span class="w"> </span><span class="n">ABSOLUTE</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">147</span><span class="err">]</span><span class="o">:</span><span class="w">     </span><span class="k">list</span><span class="p">(</span><span class="n">APPEND</span><span class="w"> </span><span class="n">INCLUDES</span><span class="w"> </span><span class="s2">"--framework-include-paths=${lib_dir}"</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">148</span><span class="err">]</span><span class="o">:</span><span class="w"> </span><span class="n">endif</span><span class="p">()</span>
+<span class="err">[141]:</span><span class="w"> </span><span class="c"># On macOS, check if Qt is a framework build. This affects how include paths should be handled.</span>
+<span class="err">[142]:</span><span class="w"> </span><span class="nb">get_target_property</span><span class="p">(</span><span class="s">QtCore_is_framework</span><span class="w"> </span><span class="s">Qt6::Core</span><span class="w"> </span><span class="s">FRAMEWORK</span><span class="p">)</span>
+<span class="err">[143]:</span><span class="w"> </span><span class="nb">if</span><span class="w"> </span><span class="p">(</span><span class="s">QtCore_is_framework</span><span class="p">)</span>
+<span class="err">[144]:</span><span class="w">     </span><span class="nb">get_target_property</span><span class="p">(</span><span class="s">qt_core_library_location</span><span class="w"> </span><span class="s">Qt6::Core</span><span class="w"> </span><span class="s">LOCATION</span><span class="p">)</span>
+<span class="err">[145]:</span><span class="w">     </span><span class="nb">get_filename_component</span><span class="p">(</span><span class="s">qt_core_library_location_dir</span><span class="w"> </span><span class="s2">"${qt_core_library_location}"</span><span class="w"> </span><span class="s">DIRECTORY</span><span class="p">)</span>
+<span class="err">[146]:</span><span class="w">     </span><span class="nb">get_filename_component</span><span class="p">(</span><span class="s">lib_dir</span><span class="w"> </span><span class="s2">"${qt_core_library_location_dir}/../"</span><span class="w"> </span><span class="s">ABSOLUTE</span><span class="p">)</span>
+<span class="err">[147]:</span><span class="w">     </span><span class="nb">list</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">INCLUDES</span><span class="w"> </span><span class="s2">"--framework-include-paths=${lib_dir}"</span><span class="p">)</span>
+<span class="err">[148]:</span><span class="w"> </span><span class="nb">endif</span><span class="p">()</span>
 </code></pre></div>
 <p>In code above, <code>get_target_property(qt_core_library_location Qt6::Core LOCATION)</code>, 
 will set <code>${qt_core_library_location}</code> to <code>where_installed/Qt/6.5.2/macos/lib/QtCore.framework/Versions/A/QtCore</code> 
@@ -369,51 +371,50 @@ finally <code>get_filename_component(lib_dir "${qt_core_library_location_dir}/..
 <code>--framework-include-paths</code>, which is not correct.</p>
 <p>As <code>pyside/example/scriptableapplication</code> CMakeList file fixed this issue by setting <code>${lib_dir}</code> to 
 <code>where_installed/Qt/6.5.2/macos/lib/</code></p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;</span><span class="w"> </span><span class="n">CMakeLists</span><span class="p">.</span><span class="n">txt</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n n-Quoted">`scriptableapplication`</span><span class="w"> </span><span class="n">example</span><span class="p">,</span><span class="w"> </span><span class="n">line</span><span class="w"> </span><span class="mi">89</span><span class="o">~</span><span class="mi">97</span>
+<div class="highlight"><pre><span></span><code><span class="err">&gt;</span><span class="w"> </span><span class="err">CMakeLists.txt</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">`scriptableapplication`</span><span class="w"> </span><span class="err">example,</span><span class="w"> </span><span class="err">line</span><span class="w"> </span><span class="err">89~97</span>
 
-<span class="err">[</span><span class="mi">89</span><span class="err">]</span><span class="o">:</span><span class="w"> </span><span class="c1"># On macOS, check if Qt is a framework build. This affects how include paths should be handled.</span>
-<span class="err">[</span><span class="mi">90</span><span class="err">]</span><span class="o">:</span><span class="w"> </span><span class="n">get_target_property</span><span class="p">(</span><span class="n">QtCore_is_framework</span><span class="w"> </span><span class="n">Qt6</span><span class="o">::</span><span class="n">Core</span><span class="w"> </span><span class="n">FRAMEWORK</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">91</span><span class="err">]</span><span class="o">:</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">QtCore_is_framework</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">92</span><span class="err">]</span><span class="o">:</span><span class="w">     </span><span class="n">get_target_property</span><span class="p">(</span><span class="n">qt_core_library_location</span><span class="w"> </span><span class="n">Qt6</span><span class="o">::</span><span class="n">Core</span><span class="w"> </span><span class="n">LOCATION</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">93</span><span class="err">]</span><span class="o">:</span><span class="w">     </span><span class="c1"># PYSIDE-623: We move up until the directory contains all the frameworks.</span>
-<span class="err">[</span><span class="mi">94</span><span class="err">]</span><span class="o">:</span><span class="w">     </span><span class="c1">#             This is "lib" in ".../lib/QtCore.framework/Versions/A/QtCore".</span>
-<span class="err">[</span><span class="mi">95</span><span class="err">]</span><span class="o">:</span><span class="w">     </span><span class="n">get_filename_component</span><span class="p">(</span><span class="n">lib_dir</span><span class="w"> </span><span class="s2">"${qt_core_library_location}/../../../.."</span><span class="w"> </span><span class="n">ABSOLUTE</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">96</span><span class="err">]</span><span class="o">:</span><span class="w">     </span><span class="k">list</span><span class="p">(</span><span class="n">APPEND</span><span class="w"> </span><span class="n">INCLUDES</span><span class="w"> </span><span class="s2">"--framework-include-paths=${lib_dir}"</span><span class="p">)</span>
-<span class="err">[</span><span class="mi">97</span><span class="err">]</span><span class="o">:</span><span class="w"> </span><span class="n">endif</span><span class="p">()</span>
+<span class="err">[89]:</span><span class="w"> </span><span class="c"># On macOS, check if Qt is a framework build. This affects how include paths should be handled.</span>
+<span class="err">[90]:</span><span class="w"> </span><span class="nb">get_target_property</span><span class="p">(</span><span class="s">QtCore_is_framework</span><span class="w"> </span><span class="s">Qt6::Core</span><span class="w"> </span><span class="s">FRAMEWORK</span><span class="p">)</span>
+<span class="err">[91]:</span><span class="w"> </span><span class="nb">if</span><span class="w"> </span><span class="p">(</span><span class="s">QtCore_is_framework</span><span class="p">)</span>
+<span class="err">[92]:</span><span class="w">     </span><span class="nb">get_target_property</span><span class="p">(</span><span class="s">qt_core_library_location</span><span class="w"> </span><span class="s">Qt6::Core</span><span class="w"> </span><span class="s">LOCATION</span><span class="p">)</span>
+<span class="err">[93]:</span><span class="w">     </span><span class="c"># PYSIDE-623: We move up until the directory contains all the frameworks.</span>
+<span class="err">[94]:</span><span class="w">     </span><span class="c">#             This is "lib" in ".../lib/QtCore.framework/Versions/A/QtCore".</span>
+<span class="err">[95]:</span><span class="w">     </span><span class="nb">get_filename_component</span><span class="p">(</span><span class="s">lib_dir</span><span class="w"> </span><span class="s2">"${qt_core_library_location}/../../../.."</span><span class="w"> </span><span class="s">ABSOLUTE</span><span class="p">)</span>
+<span class="err">[96]:</span><span class="w">     </span><span class="nb">list</span><span class="p">(</span><span class="s">APPEND</span><span class="w"> </span><span class="s">INCLUDES</span><span class="w"> </span><span class="s2">"--framework-include-paths=${lib_dir}"</span><span class="p">)</span>
+<span class="err">[97]:</span><span class="w"> </span><span class="nb">endif</span><span class="p">()</span>
 
-<span class="o">~~~~</span>
-<span class="n">Merged</span><span class="w"> </span><span class="n">information</span><span class="o">:</span>
-<span class="n">Fix</span><span class="w"> </span><span class="n">scriptableapplication</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="n">macOS</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">framework</span><span class="w"> </span><span class="n">Qt</span>
+<span class="err">~~~~</span>
+<span class="err">Merged</span><span class="w"> </span><span class="err">information:</span>
+<span class="err">Fix</span><span class="w"> </span><span class="err">scriptableapplication</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">build</span><span class="w"> </span><span class="err">on</span><span class="w"> </span><span class="err">macOS</span><span class="w"> </span><span class="err">with</span><span class="w"> </span><span class="err">framework</span><span class="w"> </span><span class="err">Qt</span>
 
-<span class="k">In</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">Qt</span><span class="w"> </span><span class="n">framework</span><span class="w"> </span><span class="n">build</span><span class="p">,</span><span class="w"> </span><span class="n">shiboken</span><span class="w"> </span><span class="n">needs</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">passed</span><span class="w"> </span><span class="n">a</span>
-<span class="o">--</span><span class="n">framework</span><span class="o">-</span><span class="n">include</span><span class="o">-</span><span class="n">paths</span><span class="o">=</span><span class="n">foo</span><span class="w"> </span><span class="n">parameter</span><span class="w"> </span><span class="n">pointing</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Qt</span>
-<span class="n">framework</span><span class="w"> </span><span class="n">libdir</span><span class="p">.</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">used</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">C</span><span class="o">++</span><span class="w"> </span><span class="k">parser</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">resolve</span>
-<span class="n">framework</span><span class="w"> </span><span class="n">include</span><span class="w"> </span><span class="n">paths</span><span class="p">.</span>
+<span class="err">In</span><span class="w"> </span><span class="err">case</span><span class="w"> </span><span class="err">of</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">Qt</span><span class="w"> </span><span class="err">framework</span><span class="w"> </span><span class="err">build,</span><span class="w"> </span><span class="err">shiboken</span><span class="w"> </span><span class="err">needs</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">be</span><span class="w"> </span><span class="err">passed</span><span class="w"> </span><span class="err">a</span>
+<span class="err">--framework-include-paths=foo</span><span class="w"> </span><span class="err">parameter</span><span class="w"> </span><span class="err">pointing</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">Qt</span>
+<span class="err">framework</span><span class="w"> </span><span class="err">libdir.</span><span class="w"> </span><span class="err">This</span><span class="w"> </span><span class="err">is</span><span class="w"> </span><span class="err">used</span><span class="w"> </span><span class="err">by</span><span class="w"> </span><span class="err">the</span><span class="w"> </span><span class="err">C++</span><span class="w"> </span><span class="err">parser</span><span class="w"> </span><span class="err">to</span><span class="w"> </span><span class="err">resolve</span>
+<span class="err">framework</span><span class="w"> </span><span class="err">include</span><span class="w"> </span><span class="err">paths.</span>
 
-<span class="n">Task</span><span class="o">-</span><span class="k">number</span><span class="o">:</span><span class="w"> </span><span class="n">PYSIDE</span><span class="o">-</span><span class="mi">623</span>
-<span class="k">Change</span><span class="o">-</span><span class="n">Id</span><span class="o">:</span><span class="w"> </span><span class="n">I38cf34a51102265056aea8718ad059aea3438354</span>
-<span class="n">Reviewed</span><span class="o">-</span><span class="k">by</span><span class="o">:</span><span class="w"> </span><span class="n">Friedemann</span><span class="w"> </span><span class="n">Kleint</span><span class="w"> </span><span class="o">&lt;</span><span class="n">Friedemann</span><span class="p">.</span><span class="n">Kleint</span><span class="nv">@qt.io</span><span class="o">&gt;</span>
+<span class="err">Task-number:</span><span class="w"> </span><span class="err">PYSIDE-623</span>
+<span class="err">Change-Id:</span><span class="w"> </span><span class="err">I38cf34a51102265056aea8718ad059aea3438354</span>
+<span class="err">Reviewed-by:</span><span class="w"> </span><span class="err">Friedemann</span><span class="w"> </span><span class="err">Kleint</span><span class="w"> </span><span class="err">&lt;Friedemann.Kleint@qt.io&gt;</span>
 </code></pre></div>
 <h3 id="modulenotfounderror-no-module-named-wiggly-issue"><code>ModuleNotFoundError: No module named 'wiggly'</code> issue</h3>
 <p>After solving first issue, we have built out <code>libwiggly.dylib</code> and <code>wiggly.dylib</code>. 
 If you directly run <code>main.py</code> under <code>examples/widgetbinding/main.py</code>, the Python will complains <code>ModuleNotFoundError: No module named 'wiggly'</code> error. 
 It is because Python can not load <code>wiggly.dylib</code> directly, it can only load bundle file <code>wiggly.so</code>. So let's dig into 
 <code>CMakeLists.txt</code> file again.</p>
-<div class="highlight"><pre><span></span><code>#<span class="w"> </span>Define<span class="w"> </span>and<span class="w"> </span>build<span class="w"> </span>the<span class="w"> </span>bindings<span class="w"> </span>library.
-add_library(<span class="cp">${</span><span class="n">bindings_library</span><span class="cp">}</span><span class="w"> </span>SHARED<span class="w"> </span><span class="cp">${</span><span class="err">$</span><span class="p">{</span><span class="n">bindings_library</span><span class="cp">}</span>_sources})
+<div class="highlight"><pre><span></span><code><span class="c"># Define and build the bindings library.</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="o">${</span><span class="nv">bindings_library</span><span class="o">}</span><span class="w"> </span><span class="s">SHARED</span><span class="w"> </span><span class="o">${</span><span class="nv">${bindings_library</span><span class="o">}</span><span class="s">_sources}</span><span class="p">)</span>
 </code></pre></div>
 <p>We can see that <code>${bindings_library}</code> is compiled as shared library, which is <code>*.dylib</code> by the way. So we change the 
 CMake instructions and make it compile <code>wiggly</code> as bundle module now.</p>
-<div class="highlight"><pre><span></span><code>#<span class="w"> </span>Define<span class="w"> </span>and<span class="w"> </span>build<span class="w"> </span>the<span class="w"> </span>bindings<span class="w"> </span>library.
-add_library(<span class="cp">${</span><span class="n">bindings_library</span><span class="cp">}</span><span class="w"> </span>MODULE<span class="w"> </span><span class="cp">${</span><span class="err">$</span><span class="p">{</span><span class="n">bindings_library</span><span class="cp">}</span>_sources})
+<div class="highlight"><pre><span></span><code><span class="c"># Define and build the bindings library.</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="o">${</span><span class="nv">bindings_library</span><span class="o">}</span><span class="w"> </span><span class="s">MODULE</span><span class="w"> </span><span class="o">${</span><span class="nv">${bindings_library</span><span class="o">}</span><span class="s">_sources}</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="result-congratulations-hello-pyside6-from-c">Result: Congratulations Hello PySide6 from C++!</h3>
-<blockquote>
-<p>cmake -H.. -B. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=x86_64
+<div class="highlight"><pre><span></span><code>cmake<span class="w"> </span>-H..<span class="w"> </span>-B.<span class="w"> </span>-G<span class="w"> </span>Ninja<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DCMAKE_OSX_ARCHITECTURES<span class="o">=</span>x86_64
 ninja
-ninja install
-cd ..;python main.py</p>
-</blockquote>
+ninja<span class="w"> </span>install
+<span class="nb">cd</span><span class="w"> </span>..<span class="p">;</span>python<span class="w"> </span>main.py
+</code></pre></div>
 <p><img alt="Wiggly Screenshot" src="./images/wiggly-snapshot.png"/></p>
 <h2 id="question-what-are-the-differences-between-so-and-dylib-on-macos_1">Question: What are the differences between .so and .dylib on macOS?</h2>
 <blockquote>

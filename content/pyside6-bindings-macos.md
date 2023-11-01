@@ -38,9 +38,11 @@ I am get used to `Anaconda` environment, its the same of you to use `virtualenv`
 Create a new python environment using Python 3.11 (PySide6 only supports Python > 3.8 and it's no difference to use 
 3.9, 3.10, 3.11), I use 3.11 because it is latest Python version at the time of writing.
 
-> ```conda create --name pyside python=3.11```
-> ```ninja --version```
-> ```cmake --version```
+```bash
+conda create --name pyside python=3.11
+ninja --version
+cmake --version
+```
 
 If everything works fine and no output complains about missing something then you can proceed.
 
@@ -54,13 +56,19 @@ There is easy way and hard way to install PySide6 in your python environment.
 ### Download PySide source code! (Hard trip)
 
 #### Cloning the official repository can be done by:
-> `git clone https://code.qt.io/pyside/pyside-setup`
+```bash
+git clone https://code.qt.io/pyside/pyside-setup
+```
 
 #### Checking out the version that we want to build, for example, 6.5.2:
-> `cd pyside-setup && git checkout 6.5.2`
+```bash
+cd pyside-setup && git checkout 6.5.2
+```
 
 #### Install the general dependencies:
-> `pip install -r requirements.txt`
+```bash
+pip install -r requirements.txt
+```
 
 > NOTE: Keep in mind you need to use the same version as your Qt installation
 
@@ -70,11 +78,13 @@ Check your Qt installation path, to specifically use that version of qtpaths to 
 
 Build can take a few minutes, so it is recommended to use more than one CPU core:
 
-`python setup.py build --qtpaths=/User/XX/Qt/6.5.2/macos/bin/qtpaths/qtpaths --build-tests --ignore-git --parallel=8`
+```bash
+python setup.py build --qtpaths=/User/XX/Qt/6.5.2/macos/bin/qtpaths/qtpaths --build-tests --ignore-git --parallel=8
+```
 
 #### EWWWWW... ISSUE MET! (Hard trip)
 
-```
+```bash
 CMake Error at cmake/ShibokenHelpers.cmake:170 (find_package):
   Could not find a package configuration file provided by "Clang" with any of
   the following names:
@@ -94,14 +104,14 @@ Call Stack (most recent call first):
 Since I have `CommandLineTools` installed instead of XCode.app, the CMake can not find my `Clang` correctly. (Clang is used for static CPP source file 
 parse for syntax extraction used in binding source file generation).
 
-```
+```bash
 $ mdfind -name libclang.dylib
 /Library/Developer/CommandLineTools/usr/lib/libclang.dylib
 ```
 
 I digged into CMake files and found this in `ShibokenHelper.cmake`:
 
-```
+```cmake
 macro(setup_clang)
     # Find libclang using the environment variables LLVM_INSTALL_DIR,
     # CLANG_INSTALL_DIR using standard cmake.
@@ -135,11 +145,16 @@ Eventually I altered to method which is suggested in QtForPython Getting Started
 > Setting up CLANG
 > If you don’t have libclang already in your system, you can download from the Qt servers:
 
-> `wget https://download.qt.io/development_releases/prebuilt/libclang/libclang-release_140-based-macos-universal.7z`
+```bash
+wget https://download.qt.io/development_releases/prebuilt/libclang/libclang-release_140-based-macos-universal.7z
+```
+
 > Extract the files, and leave it on any desired path, and set the environment variable required:
 
-> `7z x libclang-release_140-based-macos-universal.7z`
-> `export LLVM_INSTALL_DIR=$PWD/libclang`
+```bash
+7z x libclang-release_140-based-macos-universal.7z
+export LLVM_INSTALL_DIR=$PWD/libclang
+```
 
 And it worked as expected. 
 
@@ -163,7 +178,9 @@ But here we just use `python setup.py install --qtpaths=/User/XX/Qt/6.5.2/macos/
 
 You can execute one of the examples to verify the process is properly working. Remember to properly set the environment variables for Qt and PySide:
 
-> `python examples/widgets/widgets/tetrix/tetrix.py`
+```bash
+python examples/widgets/widgets/tetrix/tetrix.py
+```
 
 ## Write C++ generate Python bindings for usage.
 
@@ -198,7 +215,7 @@ work so hard to make every "Intel" based program running on M1 chip without rewr
 
 But still we need to set a CMake variable to instruct CMake generate project to compile to `x86_64`. 
 
-```
+```bash
 cd examples/samplebinding
 mkdir build
 cd build
@@ -281,7 +298,7 @@ This is weird since we have just built `scriptableapplication` which works fine.
 I found the error is somehow came from the specific QtCore include paths which are passed to shiboken. 
 The code in `widgetbinding` example was not right.
 
-```
+```cmake
 > CMakeLists.txt of `widgetbinding` example, line 141~148
 
 [141]: # On macOS, check if Qt is a framework build. This affects how include paths should be handled.
@@ -305,7 +322,7 @@ finally `get_filename_component(lib_dir "${qt_core_library_location_dir}/../" AB
 As `pyside/example/scriptableapplication` CMakeList file fixed this issue by setting `${lib_dir}` to 
 `where_installed/Qt/6.5.2/macos/lib/`
 
-```
+```cmake
 > CMakeLists.txt of `scriptableapplication` example, line 89~97
 
 [89]: # On macOS, check if Qt is a framework build. This affects how include paths should be handled.
@@ -339,7 +356,7 @@ If you directly run `main.py` under `examples/widgetbinding/main.py`, the Python
 It is because Python can not load `wiggly.dylib` directly, it can only load bundle file `wiggly.so`. So let's dig into 
 `CMakeLists.txt` file again.
 
-```
+```cmake
 # Define and build the bindings library.
 add_library(${bindings_library} SHARED ${${bindings_library}_sources})
 ```
@@ -347,7 +364,7 @@ add_library(${bindings_library} SHARED ${${bindings_library}_sources})
 We can see that `${bindings_library}` is compiled as shared library, which is `*.dylib` by the way. So we change the 
 CMake instructions and make it compile `wiggly` as bundle module now.
 
-```
+```cmake
 # Define and build the bindings library.
 add_library(${bindings_library} MODULE ${${bindings_library}_sources})
 ```
@@ -355,10 +372,12 @@ add_library(${bindings_library} MODULE ${${bindings_library}_sources})
 
 ### Result: Congratulations Hello PySide6 from C++!
 
-> cmake -H.. -B. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=x86_64
-> ninja
-> ninja install
-> cd ..;python main.py
+```bash
+cmake -H.. -B. -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=x86_64
+ninja
+ninja install
+cd ..;python main.py
+```
 
 ![Wiggly Screenshot](./images/wiggly-snapshot.png)
 
